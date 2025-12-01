@@ -340,13 +340,37 @@
     }
 
     @media(max-width:960px){
-      .logo-halo{width:280px;height:280px}
-      .logo-halo img{width:240px;height:240px}
+      .logo-halo{width:260px;height:260px}
+      .logo-halo img{width:220px;height:220px}
       .galleria{grid-template-columns:1fr 1fr}
     }
-    @media(max-width:600px){
-      .hero__title--tag{font-size:24px}
-      .galleria{grid-template-columns:1fr}
+    @media(max-width:780px){
+      .hero{background-attachment:scroll;background-position:center top}
+      .hero__wrap{padding:36px 0 28px}
+      .logo-halo{width:230px;height:230px;margin:10px 0}
+      .logo-halo img{width:195px;height:195px}
+      .arc img{width:420px}
+      .btn{width:100%;text-align:center}
+      .nav{flex-wrap:wrap;height:auto;padding:10px 0 14px}
+      .nav a{padding:8px 10px}
+      .gallery-btn.prev{left:6px}
+      .gallery-btn.next{right:6px}
+      .shot{flex:0 0 210px;height:280px}
+      .wa-sticky{right:10px;bottom:10px;padding:10px 12px}
+      .wa-sticky span{font-size:14px}
+    }
+    @media(max-width:520px){
+      .container{padding:0 16px}
+      .hero__title--tag{font-size:22px}
+      .arc img{width:320px}
+      .logo-halo{width:200px;height:200px}
+      .logo-halo img{width:170px;height:170px}
+      .card h3{font-size:16px}
+      .price{font-size:16px}
+      .gallery-btn{font-size:30px;line-height:30px;padding:4px 10px}
+      .shot{flex:0 0 180px;height:240px}
+      section{padding:56px 0}
+      .wa-sticky svg{width:18px;height:18px}
     }
   </style>
 </head>
@@ -407,8 +431,8 @@
 
       <!-- CTA -->
       <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-        <a class="btn btn--blood chicano-text" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20prenotare%20un%20taglio."
-           aria-label="Prenota con EscoBarber su WhatsApp">Prenota con EscoBarber</a>
+        <a class="btn btn--blood chicano-text" href="#" data-wa-coming="true"
+           aria-label="EscoBarber Bot coming soon">Prenota con EscoBarber</a>
         <a class="btn btn--ghost chicano-text" href="#servizi" aria-label="Vai ai servizi">Vedi servizi</a>
       </div>
     </div>
@@ -419,7 +443,7 @@
     <div class="container reveal">
       <div class="section__head">
         <h2 id="servizi-title" class="section__title chicano-text metal-shimmer">Servizi & Prezzi</h2>
-        <a class="btn btn--ghost chicano-text" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20mi%20dai%20info%20su%20prezzi%20e%20disponibilit%C3%A0%3F">Chiedi a EscoBarber</a>
+        <a class="btn btn--ghost chicano-text" href="#" data-wa-coming="true">Chiedi a EscoBarber</a>
       </div>
 
       <div class="prices" role="list">
@@ -479,7 +503,7 @@
     <div class="container reveal">
       <div class="section__head">
         <h2 id="dove-title" class="section__title chicano-text metal-shimmer">Dove siamo</h2>
-        <a class="btn btn--blood chicano-text" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20prenotare%20per%20domani.">Prenota ora</a>
+        <a class="btn btn--blood chicano-text" href="#" data-wa-coming="true">Prenota ora</a>
       </div>
       <iframe class="map"
         title="Mappa — EscoBarber"
@@ -498,7 +522,7 @@
         <h2 id="contatti-title" class="section__title chicano-text metal-shimmer">Contatti</h2>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a class="btn btn--blood chicano-text" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20info%20su%20taglio%20e%20barba." aria-label="Prenota su WhatsApp">Prenota con EscoBarber</a>
+        <a class="btn btn--blood chicano-text" href="#" data-wa-coming="true" aria-label="EscoBarber Bot coming soon">Prenota con EscoBarber</a>
         <a class="btn btn--ghost chicano-text" href="mailto:info@escobarber.it" aria-label="Invia email a EscoBarber">Email</a>
         <a class="btn btn--ghost chicano-text" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Apri Instagram">Instagram</a>
       </div>
@@ -506,7 +530,7 @@
   </section>
 </main>
 
-<a class="wa-sticky" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20parlare%20con%20te." aria-label="Parla con EscoBarber su WhatsApp">
+<a class="wa-sticky" href="#" data-wa-coming="true" aria-label="EscoBarber Bot coming soon">
   <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path fill="#fff" d="M19.11 17.33c-.27-.14-1.58-.78-1.83-.87-.25-.09-.43-.14-.62.14-.18.27-.71.87-.87 1.05-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.58-1.5-1.85-.16-.27 0-.41.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.86-2.04-.23-.55-.46-.48-.62-.48h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.34.98 2.64 1.12 2.82.14.18 1.93 2.95 4.68 4.14.65.28 1.15.45 1.54.57.65.21 1.25.18 1.72.11.52-.08 1.58-.64 1.8-1.25.23-.62.23-1.15.16-1.25-.07-.09-.25-.16-.52-.3z"/>
     <path stroke="#fff" d="M26 15c0 6.08-4.93 11-11 11-1.88 0-3.65-.47-5.19-1.29L5 26l1.29-4.81A10.94 10.94 0 0 1 4 15C4 8.92 8.92 4 15 4s11 4.92 11 11z"/>
@@ -682,6 +706,19 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
       preloader.classList.add("hidden");
     }, 2500); // durata visibile (ms) dopo il load – puoi aumentare/diminuire
+  });
+});
+</script>
+
+<!-- Coming soon handler for WhatsApp CTAs -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const message = "EscoBarber Bot - coming soon";
+  document.querySelectorAll("[data-wa-coming]").forEach(link => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      alert(message);
+    });
   });
 });
 </script>
