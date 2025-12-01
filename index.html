@@ -460,12 +460,12 @@
         
         <div class="gallery-slider" role="region" aria-label="Galleria immagini EscoBarber">
           <div class="gallery-track">
-            <figure class="shot"><img src="/img/cut1.jpg" alt="Taglio 1"></figure>
-            <figure class="shot"><img src="/img/cut2.jpg" alt="Taglio 2"></figure>
-            <figure class="shot"><img src="/img/cut3.jpg" alt="Taglio 3"></figure>
-            <figure class="shot"><img src="/img/cut4.jpg" alt="Taglio 4"></figure>
-            <figure class="shot"><img src="/img/cut5.jpg" alt="Taglio 5"></figure>
-            <figure class="shot"><img src="/img/cut6.jpg" alt="Taglio 6"></figure>
+            <figure class="shot"><img src="img/cut1.jpg" alt="Taglio 1"></figure>
+            <figure class="shot"><img src="img/cut2.jpg" alt="Taglio 2"></figure>
+            <figure class="shot"><img src="img/cut3.jpg" alt="Taglio 3"></figure>
+            <figure class="shot"><img src="img/cut4.jpg" alt="Taglio 4"></figure>
+            <figure class="shot"><img src="img/cut5.jpg" alt="Taglio 5"></figure>
+            <figure class="shot"><img src="img/cut6.jpg" alt="Taglio 6"></figure>
           </div>
         </div>
 
@@ -584,10 +584,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Foto reali del negozio (cartella /img)
 const slides = [
-  "/img/immnegozio1.JPG",
-  "/img/immnegozio2.jpg",
-  "/img/immnegozio3.jpg",
-  "/img/immnegozio4.jpg"
+  "img/immnegozio1.JPG",
+  "img/immnegozio2.jpg",
+  "img/immnegozio3.jpg",
+  "img/immnegozio4.jpg"
 ];
 
 
@@ -665,7 +665,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // fallback per immagini mancanti
   track.querySelectorAll("img").forEach(img => {
     img.onerror = () => {
-      img.src = "/img/placeholder.jpg";
+      img.src = "img/placeholder.jpg";
       img.style.filter = "grayscale(80%) opacity(0.7)";
     };
   });
