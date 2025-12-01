@@ -239,6 +239,7 @@
     /* === GALLERIA SLIDER === */
     .gallery-slider {
       position: relative;
+      width: 100%;
       overflow: hidden;
       border-radius: 14px;
       border: 2px solid var(--blood);
@@ -250,9 +251,13 @@
       overflow-x: auto;
       scroll-behavior: smooth;
       display: flex;
-      gap: 14px;
-      padding: 8px;
+      gap: 16px;
+      padding: 14px 16px;
       scroll-snap-type: x mandatory;
+      scroll-snap-stop: always;
+      scroll-padding: 16px;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
 
     .gallery-track::-webkit-scrollbar {
@@ -266,8 +271,11 @@
     .gallery-wrapper {
       position: relative;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 12px;
+      width: 100%;
     }
 
     .gallery-btn {
@@ -293,8 +301,10 @@
     .gallery-btn.next { right: -15px; }
 
     .shot {
-      flex: 0 0 250px;
-      height: 340px;
+      flex: 0 0 32%;
+      min-width: 240px;
+      max-width: 360px;
+      aspect-ratio: 4 / 5;
       scroll-snap-align: center;
       border-radius: 12px;
       overflow: hidden;
@@ -306,6 +316,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 12%;
       transform: scale(1);
       transition: transform .25s ease;
     }
@@ -313,6 +324,30 @@
     /* Solo ingrandimento morbido al passaggio del mouse */
     .shot:hover img {
       transform: scale(1.06);
+    }
+
+    .gallery-dots{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:2px;
+    }
+    .gallery-dot{
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      border:1px solid var(--blood);
+      background:#1a1a1a;
+      box-shadow:0 0 8px rgba(0,0,0,.4);
+      opacity:.8;
+      transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease, background .15s ease;
+    }
+    .gallery-dot:hover{opacity:1;transform:scale(1.05);}
+    .gallery-dot.is-active{
+      background:var(--blood);
+      box-shadow:var(--glow);
+      opacity:1;
     }
 
 
@@ -358,12 +393,16 @@
       .btn{width:100%;text-align:center}
       .nav{height:auto;padding:10px 0 14px}
       .nav a{padding:8px 10px;font-size:15px}
+      .gallery-btn{display:none}
       .gallery-btn.prev{left:6px}
       .gallery-btn.next{right:6px}
-      .gallery-track{gap:10px}
-      .shot{flex:0 0 220px;height:260px}
+      .gallery-track{gap:14px;padding:14px 12px}
+      .shot{flex:0 0 88vw;max-width:88vw;min-width:240px;aspect-ratio:4/5}
       .wa-sticky{right:10px;bottom:10px;padding:9px 12px}
       .wa-sticky span{font-size:14px}
+    }
+    @media(min-width:781px) and (max-width:1100px){
+      .shot{flex:0 0 48%;max-width:420px;aspect-ratio:4/5}
     }
     @media(max-width:520px){
       .container{padding:0 14px}
@@ -376,8 +415,8 @@
       .card h3{font-size:15px}
       .price{font-size:15px}
       .gallery-btn{font-size:28px;line-height:28px;padding:4px 10px}
-      .gallery-track{gap:8px;padding:8px 2px}
-      .shot{flex:0 0 82vw;height:220px}
+      .gallery-track{gap:12px;padding:14px 10px}
+      .shot{flex:0 0 92vw;max-width:92vw;min-width:230px;aspect-ratio:4/5}
       section{padding:50px 0}
       .btn{padding:12px 14px}
       .wa-sticky{padding:8px 10px}
@@ -492,8 +531,6 @@
       </div>
 
       <div class="gallery-wrapper">
-        <button class="gallery-btn prev" aria-label="Precedente">‹</button>
-        
         <div class="gallery-slider" role="region" aria-label="Galleria immagini EscoBarber">
           <div class="gallery-track">
             <figure class="shot"><img src="img/cut1.jpg" alt="Taglio 1"></figure>
@@ -505,7 +542,7 @@
           </div>
         </div>
 
-        <button class="gallery-btn next" aria-label="Successivo">›</button>
+        <div class="gallery-dots" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -667,36 +704,90 @@ const slides = [
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".gallery-track");
-  const btnPrev = document.querySelector(".gallery-btn.prev");
-  const btnNext = document.querySelector(".gallery-btn.next");
-  if (!track || !btnPrev || !btnNext) return;
+  const dotsContainer = document.querySelector(".gallery-dots");
+  if (!track) return;
 
-  const groupSize = 3;
+  function getGroupSize() {
+    if (window.matchMedia("(max-width: 640px)").matches) return 1;
+    if (window.matchMedia("(max-width: 900px)").matches) return 2;
+    return 3;
+  }
+
+  let groupSize = getGroupSize();
   let currentGroup = 0;
+  let rafId = null;
 
-  function scrollToGroup(index) {
-    const child = track.children[index * groupSize];
+  function totalGroups() {
+    return Math.ceil(track.children.length / groupSize);
+  }
+
+  function updateDots() {
+    if (!dotsContainer) return;
+    dotsContainer.querySelectorAll(".gallery-dot").forEach((dot, i) => {
+      dot.classList.toggle("is-active", i === currentGroup);
+    });
+  }
+
+  function buildDots() {
+    if (!dotsContainer) return;
+    dotsContainer.innerHTML = "";
+    const total = totalGroups();
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement("button");
+      dot.className = "gallery-dot" + (i === currentGroup ? " is-active" : "");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Vai al gruppo " + (i + 1));
+      dot.addEventListener("click", () => goToGroup(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function goToGroup(index) {
+    const total = totalGroups();
+    const targetGroup = (index + total) % total;
+    const child = track.children[targetGroup * groupSize];
     if (!child) return;
-    const left = child.offsetLeft;
-    track.scrollTo({ left, behavior: "smooth" });
+    currentGroup = targetGroup;
+    track.scrollTo({ left: child.offsetLeft, behavior: "smooth" });
+    updateDots();
   }
 
-  function nextGroup() {
-    const total = track.children.length;
-    const maxGroup = Math.ceil(total / groupSize);
-    currentGroup = (currentGroup + 1) % maxGroup;
-    scrollToGroup(currentGroup);
-  }
+  function nextGroup() { goToGroup(currentGroup + 1); }
+  function prevGroup() { goToGroup(currentGroup - 1); }
 
-  function prevGroup() {
-    const total = track.children.length;
-    const maxGroup = Math.ceil(total / groupSize);
-    currentGroup = (currentGroup - 1 + maxGroup) % maxGroup;
-    scrollToGroup(currentGroup);
-  }
+  track.addEventListener("scroll", () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      const children = Array.from(track.children);
+      if (!children.length) return;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      children.forEach((child, idx) => {
+        const childCenter = child.offsetLeft + child.offsetWidth / 2;
+        const dist = Math.abs(childCenter - center);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestIndex = idx;
+        }
+      });
+      currentGroup = Math.floor(closestIndex / groupSize);
+      updateDots();
+      rafId = null;
+    });
+  });
 
-  btnNext.addEventListener("click", nextGroup);
-  btnPrev.addEventListener("click", prevGroup);
+  const handleResize = () => {
+    const nextSize = getGroupSize();
+    if (nextSize !== groupSize) {
+      groupSize = nextSize;
+      currentGroup = 0;
+      buildDots();
+      goToGroup(0);
+    }
+  };
+
+  window.addEventListener("resize", () => requestAnimationFrame(handleResize));
 
   // fallback per immagini mancanti
   track.querySelectorAll("img").forEach(img => {
@@ -705,6 +796,48 @@ document.addEventListener("DOMContentLoaded", () => {
       img.style.filter = "grayscale(80%) opacity(0.7)";
     };
   });
+
+  buildDots();
+  goToGroup(0);
+
+  const autoDelay = 4200;
+  let autoId = setInterval(nextGroup, autoDelay);
+
+  track.addEventListener("pointerdown", () => {
+    clearInterval(autoId);
+    autoId = setInterval(nextGroup, autoDelay);
+  });
+  track.addEventListener("touchstart", () => {
+    clearInterval(autoId);
+    autoId = setInterval(nextGroup, autoDelay);
+  }, {passive:true});
+
+  // Drag to scroll (anche desktop) per garantire che lo swipe mostri altre immagini
+  let isDown = false;
+  let startX = 0;
+  let scrollStart = 0;
+
+  const startDrag = (clientX) => {
+    isDown = true;
+    startX = clientX;
+    scrollStart = track.scrollLeft;
+    track.classList.add("is-dragging");
+  };
+  const moveDrag = (clientX) => {
+    if (!isDown) return;
+    const walk = (clientX - startX);
+    track.scrollLeft = scrollStart - walk;
+  };
+  const stopDrag = () => {
+    isDown = false;
+    track.classList.remove("is-dragging");
+  };
+
+  track.addEventListener("pointerdown", (e) => startDrag(e.clientX));
+  track.addEventListener("pointermove", (e) => moveDrag(e.clientX));
+  track.addEventListener("pointerup", stopDrag);
+  track.addEventListener("pointerleave", stopDrag);
+  track.addEventListener("pointercancel", stopDrag);
 });
 </script>
 <!-- PRELOADER ESCOBARBER -->
