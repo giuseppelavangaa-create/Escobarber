@@ -58,6 +58,17 @@
     img{max-width:100%;display:block}
     a{text-decoration:none;color:inherit}
 
+    .auto-mobile,
+    .auto-desktop { display: block; }
+
+    @media (min-width: 769px) {
+      .auto-mobile { display: none !important; }
+    }
+
+    @media (max-width: 768px) {
+      .auto-desktop { display: none !important; }
+    }
+
     .container{
       width:var(--container-max);
       margin:0 auto;
@@ -1352,21 +1363,44 @@
       const slides = Array.from(document.querySelectorAll(".hero-slide"));
       if (!slides.length) return;
 
-      let current = 0;
-      const total = slides.length;
+      const mq = window.matchMedia("(max-width: 768px)");
+      let current = -1;
 
-      function showSlide(index){
-        slides.forEach((s,i)=>{
-          s.classList.toggle("is-active", i === index);
-        });
+      function isVisibleSlide(slide){
+        return mq.matches
+          ? !slide.classList.contains("auto-desktop")
+          : !slide.classList.contains("auto-mobile");
       }
 
-      function next(){
-        current = (current + 1) % total;
+      function nextVisible(startIndex){
+        let idx = startIndex;
+        for(let i = 0; i < slides.length; i++){
+          idx = (idx + 1) % slides.length;
+          if(isVisibleSlide(slides[idx])) return idx;
+        }
+        return null; // nessuna slide visibile
+      }
+
+      function showSlide(index){
+        slides.forEach((s,i)=>s.classList.toggle("is-active", i === index));
+      }
+
+      function setFirstVisible(){
+        const first = nextVisible(-1);
+        if(first === null) return;
+        current = first;
         showSlide(current);
       }
 
-      setInterval(next, 6000);
+      setFirstVisible();
+      mq.addEventListener("change", setFirstVisible);
+
+      setInterval(function(){
+        const next = nextVisible(current);
+        if(next === null) return;
+        current = next;
+        showSlide(current);
+      }, 6000);
     })();
 
     // GALLERY SLIDER + MODAL
@@ -1533,6 +1567,27 @@
         }, 2500);
       });
     });
+  </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const slides = document.querySelectorAll(".hero-slide img");
+
+    slides.forEach(img => {
+      img.addEventListener("load", () => {
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+
+        const slide = img.closest(".hero-slide");
+
+        if (h > w) {
+          slide.classList.add("auto-mobile");
+        } else {
+          slide.classList.add("auto-desktop");
+        }
+      });
+    });
+  });
   </script>
 </body>
 </html>
