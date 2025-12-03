@@ -885,6 +885,21 @@
       .hero-cta-wrapper{flex-direction:column;}
       .hero-cta{width:100%;}
       .footer-inner{justify-content:center;}
+      /* gallery mobile: orizzontale a scorrimento touch */
+      .gallery-track{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        padding-bottom:0.25rem;
+      }
+      .gallery-row{
+        grid-auto-flow:column;
+        grid-auto-columns:70vw;
+      }
+      .shot{
+        max-height:none;
+        height:60vw;
+        min-height:14rem;
+      }
     }
   </style>
 </head>
@@ -932,7 +947,7 @@
       <div class="hero-full">
         <div class="hero-slider">
           <figure class="hero-slide is-active">
-            <img src="img/immnegozio4.jpg" alt="Taglio sfumato EscoBarber">
+            <img src="img/immacasa.jpg" alt="Taglio sfumato EscoBarber">
           </figure>
           <figure class="hero-slide">
             <img src="img/immnegozio1.JPG" alt="Servizi barba EscoBarber">
@@ -962,32 +977,28 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2 class="section-title">Chi è EscoBarber</h2>
+            <h2 class="section-title">Chi Sono</h2>
             <p class="section-tagline">
-              Tagli netti, fade puliti, barba modellata a rasoio. Stile barrio, attenzione da studio.
-            </p>
           </div>
-          <a class="btn btn-outline" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20info.">Parla con noi</a>
         </div>
 
         <div class="about-grid reveal" aria-label="Chi siamo">
           <article class="about-card">
-            <h3>Dal barrio a Poggibonsi</h3>
             <p>
-              EscoBarber nasce in strada e arriva in città portando il meglio del barbershop latino:
-              lame curate, linee dritte, sfumature progressive e un'accoglienza da quartiere. Zero fronzoli,
-              solo tagli che reggono nel tempo e barba che profuma di pulito.
+              Luis è il fondatore di EscoBarber e il volto che trovi sempre dietro alla poltrona.
+              Nato come barbiere di quartiere, ha portato a Poggibonsi uno stile che unisce
+              cultura chicana, disciplina e attenzione maniacale per i dettagli.Nel negozio non entri solo per “fare i capelli”,
+              ma per uscire in ordine, sicuro e con un look che ti rappresenta davvero.
             </p>
             <div class="about-points">
-              <span>Fade chirurgici, linee precise, finitura rasoio caldo.</span>
+              <span>Fade, linee precise, finitura rasoio caldo.</span>
               <span>Prodotti bio e artigianali scelti per volume, tenuta e cura.</span>
               <span>Ambiente barrio: musica giusta, ritmi veloci, risultati netti.</span>
             </div>
           </article>
 
           <figure class="about-photo">
-            <img src="img/immnegozio2.jpg" alt="Poltrona barbershop EscoBarber">
-            <figcaption class="about-photo-tag">Dal Barrio</figcaption>
+            <img src="img/immluis.jpg" alt="Poltrona barbershop EscoBarber">
           </figure>
         </div>
       </div>
@@ -1125,7 +1136,7 @@
           </article>
 
           <figure class="about-photo products-panel-trigger" id="products-panel-trigger">
-            <img src="img/prodotti1.jpeg" alt="Linea prodotti bio e artigianali EscoBarber">
+            <img src="img/immtuttiprodotti.jpg" alt="Linea prodotti bio e artigianali EscoBarber">
             <figcaption class="about-photo-tag">Vedi altro</figcaption>
           </figure>
         </div>
@@ -1145,14 +1156,14 @@
           <div class="product-cat-grid">
             <article class="product-cat-card" data-cat="cere">
               <div class="product-cat-image">
-                <img src="img/prodotto2.jpeg" alt="Linea cere EscoBarber">
+                <img src="img/immcere1.jpg" alt="Linea cere EscoBarber">
               </div>
               <div class="product-cat-label">Cere</div>
             </article>
 
             <article class="product-cat-card" data-cat="lacca">
               <div class="product-cat-image">
-                <img src="img/prodotti5.jpeg" alt="Linea lacca EscoBarber">
+                <img src="img/immlacca.jpg" alt="Linea lacca EscoBarber">
               </div>
               <div class="product-cat-label">Lacca</div>
             </article>
