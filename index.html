@@ -967,7 +967,7 @@
             <img src="img/immnegozio2.jpg" alt="Interno EscoBarber">
           </figure>
           <figure class="hero-slide">
-            <img src="img/immnegozio3.jpg" alt="Dettagli barber shop">
+            <img src="img/immnegozio4.jpg" alt="Dettagli barber shop">
           </figure>
           <div class="hero-gradient"></div>
         </div>
@@ -1392,6 +1392,9 @@
         showSlide(current);
       }
 
+      // espongo la funzione così possiamo richiamarla dopo la classificazione delle immagini
+      window.ebSetFirstVisibleHero = setFirstVisible;
+
       setFirstVisible();
       mq.addEventListener("change", setFirstVisible);
 
@@ -1570,24 +1573,36 @@
   </script>
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const slides = document.querySelectorAll(".hero-slide img");
+  // Classificazione autom. delle immagini HERO in mobile / desktop
+  window.addEventListener("load", () => {
+    const imgs = document.querySelectorAll(".hero-slide img");
 
-    slides.forEach(img => {
-      img.addEventListener("load", () => {
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
+    imgs.forEach(img => {
+      const slide = img.closest(".hero-slide");
+      if (!slide) return;
 
-        const slide = img.closest(".hero-slide");
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
 
-        if (h > w) {
-          slide.classList.add("auto-mobile");
-        } else {
-          slide.classList.add("auto-desktop");
-        }
-      });
+      // pulisco eventuali classi vecchie
+      slide.classList.remove("auto-mobile", "auto-desktop");
+
+      if (h > w) {
+        // immagine più alta che larga = verticale = mobile
+        slide.classList.add("auto-mobile");
+      } else {
+        // immagine più larga che alta = orizzontale = desktop
+        slide.classList.add("auto-desktop");
+      }
     });
+
+    // dopo aver classificato tutte le slide,
+    // dico allo slider di scegliere la prima giusta per lo schermo
+    if (typeof window.ebSetFirstVisibleHero === "function") {
+      window.ebSetFirstVisibleHero();
+    }
   });
   </script>
+
 </body>
 </html>
