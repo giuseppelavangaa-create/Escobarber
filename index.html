@@ -700,7 +700,11 @@
       box-shadow:0 1.1rem 2.8rem rgba(22,163,74,0.75);
       backdrop-filter:blur(clamp(0.85rem,1.6vw,1.2rem)) saturate(1.4);
       -webkit-backdrop-filter:blur(clamp(0.85rem,1.6vw,1.2rem)) saturate(1.4);
-      transition:transform .25s ease-out, box-shadow .25s ease-out, background .25s ease-out, border-color .25s ease-out;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(0.4rem) scale(.97);
+      transition:opacity .25s ease-out, transform .25s ease-out, box-shadow .25s ease-out, background .25s ease-out, border-color .25s ease-out;
+
     }
     .wa-sticky svg{
       width:clamp(1.35rem,1.6vw,1.5rem);
@@ -710,6 +714,11 @@
       transform:translateY(-0.1rem) scale(1.01);
       box-shadow:0 1.5rem 3.4rem rgba(22,163,74,0.82);
       background:linear-gradient(135deg,rgba(34,197,94,0.32),rgba(6,95,70,0.95));
+    }
+    .wa-sticky.is-visible{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0) scale(1);
     }
 
     footer{
@@ -896,21 +905,30 @@
       .hero-cta-wrapper{flex-direction:column;}
       .hero-cta{width:100%;}
       .footer-inner{justify-content:center;}
-      /* gallery mobile: orizzontale a scorrimento touch */
+      /* GALLERIA MOBILE: SCORRIMENTO ORIZZONTALE PULITO */
       .gallery-track{
         overflow-x:auto;
         -webkit-overflow-scrolling:touch;
         padding-bottom:0.25rem;
+        scroll-snap-type:x mandatory;
       }
+
       .gallery-row{
-        grid-auto-flow:column;
-        grid-auto-columns:70vw;
+        display:grid;
+        grid-auto-flow:column;     /* tutte le foto in una sola riga */
+        grid-auto-columns:80vw;    /* ogni foto ~80% dello schermo */
+        grid-template-columns:none;/* disattiva le colonne auto-fit desktop */
+        gap:0.75rem;
       }
+
       .shot{
         max-height:none;
-        height:60vw;
-        min-height:14rem;
+        height:auto;
+        min-height:0;
+        aspect-ratio:3/4;          /* formato verticale */
+        scroll-snap-align:center;  /* si “aggancia” bene allo scroll */
       }
+
         /* HERO MOBILE: foto a riempimento sfondo */
       .hero-full{
         min-height:100vh;
@@ -1421,49 +1439,62 @@
       }, 6000);
     })();
 
-    // GALLERY SLIDER + MODAL
-    (function(){
-      const rows = Array.from(document.querySelectorAll(".gallery-row"));
-      if (!rows.length) return;
+      // GALLERY SLIDER + MODAL
+      (function(){
+        const rows   = Array.from(document.querySelectorAll(".gallery-row"));
+        if (!rows.length) return;
 
-      let current = 0;
-      const status = document.getElementById("gallery-status");
+        let current = 0;
+        const status = document.getElementById("gallery-status");
+        const track  = document.querySelector(".gallery-track");
 
-      function showRow(i){
-        rows.forEach((row,idx)=>row.classList.toggle("is-active", idx === i));
-        if(status) status.textContent = (i+1) + " / " + rows.length;
-      }
-      showRow(0);
+        // solo mobile: stessa breakpoint del CSS (@media max-width: 42rem)
+        function isMobileGallery(){
+          return window.matchMedia &&
+                window.matchMedia("(max-width: 42rem)").matches;
+        }
 
-      const prev = document.getElementById("gallery-prev");
-      const next = document.getElementById("gallery-next");
+        function showRow(i){
+          rows.forEach((row,idx)=>row.classList.toggle("is-active", idx === i));
+          if (status) status.textContent = (i+1) + " / " + rows.length;
 
-      if(prev && next){
-        prev.addEventListener("click", function(){
-          current = (current - 1 + rows.length) % rows.length;
-          showRow(current);
-        });
-        next.addEventListener("click", function(){
-          current = (current + 1) % rows.length;
-          showRow(current);
-        });
-      }
+          // FIX: quando cambio pagina, su mobile riporto lo scroll orizzontale all'inizio
+          if (track && isMobileGallery()){
+            track.scrollLeft = 0;
+          }
+        }
+        showRow(0);
 
-      const modal = document.getElementById("gallery-modal");
-      const modalImg = document.getElementById("gallery-modal-img");
+        const prev = document.getElementById("gallery-prev");
+        const next = document.getElementById("gallery-next");
 
-      if(modal && modalImg){
-        document.querySelectorAll(".shot img").forEach(img=>{
-          img.addEventListener("click", function(){
-            modalImg.src = this.src;
-            modal.classList.add("is-visible");
+        if (prev && next){
+          prev.addEventListener("click", function(){
+            current = (current - 1 + rows.length) % rows.length;
+            showRow(current);
           });
-        });
-        modal.addEventListener("click", function(){
-          modal.classList.remove("is-visible");
-        });
-      }
-    })();
+          next.addEventListener("click", function(){
+            current = (current + 1) % rows.length;
+            showRow(current);
+          });
+        }
+
+        const modal = document.getElementById("gallery-modal");
+        const modalImg = document.getElementById("gallery-modal-img");
+
+        if (modal && modalImg){
+          document.querySelectorAll(".shot img").forEach(img=>{
+            img.addEventListener("click", function(){
+              modalImg.src = this.src;
+              modal.classList.add("is-visible");
+            });
+          });
+          modal.addEventListener("click", function(){
+            modal.classList.remove("is-visible");
+          });
+        }
+      })();
+
 
     // MODAL PRODOTTI: CARTELLE + DETTAGLIO + ZOOM
     (function(){
@@ -1585,6 +1616,30 @@
         }, 2500);
       });
     });
+  </script>
+  </script>
+
+  <!-- WhatsApp: appare solo dopo aver scrollato oltre la home -->
+  <script>
+    (function(){
+      const wa = document.querySelector(".wa-sticky");
+      if (!wa) return;
+
+      function toggleWa(){
+        // quando superi ~una schermata (home), compare
+        const trigger = window.innerHeight * 0.9; 
+        if (window.scrollY > trigger){
+          wa.classList.add("is-visible");
+        } else {
+          wa.classList.remove("is-visible");
+        }
+      }
+
+      // controlla subito allo start
+      toggleWa();
+      window.addEventListener("scroll", toggleWa);
+      window.addEventListener("resize", toggleWa);
+    })();
   </script>
 
   <script>
