@@ -911,6 +911,23 @@
         height:60vw;
         min-height:14rem;
       }
+        /* HERO MOBILE: foto a riempimento sfondo */
+      .hero-full{
+        min-height:100vh;
+      }
+      @supports (height:100dvh){
+        .hero-full{
+          min-height:100dvh;
+        }
+      }
+
+      .hero-slide.auto-mobile img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        object-position:center center;
+      }
+
     }
   </style>
 </head>
