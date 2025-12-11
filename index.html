@@ -1,1179 +1,1747 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Avvocato Isabella Mugnaini – Diritto civile e di famiglia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EscoBarber – Dal Barrio • Barbershop Poggibonsi</title>
+  <meta name="description" content="EscoBarber – Dal Barrio. Barbershop a Poggibonsi. Fade netti, linee pulite, stile barrio. Prenota su WhatsApp. Via Montegrappa 59, Poggibonsi (SI)." />
+  <meta name="keywords" content="EscoBarber, barbiere, barbershop, Poggibonsi, Siena, taglio uomo, barba, fade, rasatura" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="canonical" href="https://www.escobarber.it/" />
 
-  <!-- FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="EscoBarber – Dal Barrio • Taglio o Plomo" />
+  <meta property="og:description" content="Fade netti, linee pulite, stile chicano. Prenota ora su WhatsApp." />
+  <meta property="og:image" content="cover.jpg" />
+  <meta property="og:url" content="https://www.escobarber.it/" />
+
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --green-dark: #143726;
-      --green: #1f5a3a;
-      --green-soft: #e3f0e4;
-      --sand: #f2e6d3;
-      --bg: #f7f5f0;
-      --text-main: #1f2421;
-      --text-soft: #3f463f;
-      --white: #ffffff;
+    :root{
+      --bg:#000000;
+      --bg-soft:#0b0b0b;
+      --surface:#101010;
+      --surface-soft:#151515;
+      --primary:#0f0202;
+      --primary-soft:rgba(225,29,72,0.14);
+      --text:#f9fafb;
+      --muted:#9ca3af;
+      --border:#1f2933;
+      --radius-xl:clamp(1.35rem,1.9vw,1.7rem);
+      --radius-lg:clamp(1rem,1.5vw,1.25rem);
+      --shadow-soft:0 1.1rem 2.8rem rgba(0,0,0,0.75);
+      --header-height:clamp(4rem,4.6vw,4.75rem);
+      --container-max:min(72rem,94vw);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{
+      font-size:clamp(0.9375rem,0.55vw + 0.75rem,1.125rem);
+    }
+    body{
+      font-family:"Space Grotesk",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(circle at top,#181818 0,#050505 45%,#000 100%);
+      color:var(--text);
+      scroll-behavior:smooth;
+      min-height:100vh;
+      line-height:1.6;
+    }
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+
+    .auto-mobile,
+    .auto-desktop { display: block; }
+
+    @media (min-width: 769px) {
+      .auto-mobile { display: none !important; }
     }
 
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 72px;
+    @media (max-width: 768px) {
+      .auto-desktop { display: none !important; }
     }
 
-    body {
-      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      color: var(--text-main);
-      background: var(--bg);
-      line-height: 1.6;
+    .container{
+      width:var(--container-max);
+      margin:0 auto;
+      padding:0 clamp(1.25rem,3vw,2rem);
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .mt-xs{margin-top:0.5rem;}
+    .mt-sm{margin-top:0.75rem;}
+    .mt-md{margin-top:1rem;}
+
+    /* PRELOADER */
+    .eb-preloader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: clamp(1rem,1.8vw,1.4rem);
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .eb-preloader-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .eb-preloader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(0.5rem,1.2vw,0.8rem);
+    }
+    .eb-preloader-circle {
+      width: clamp(9rem,18vw,16rem);
+      height: clamp(9rem,18vw,16rem);
+      border-radius: 50%;
+      border: 0.07rem solid rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1rem 2.8rem rgba(0,0,0,0.78);
+      transform-origin: center center;
+      animation: eb-roll-in 1.4s ease-out forwards;
+    }
+    .eb-preloader-logo {
+      max-width: clamp(7rem,13vw,12rem);
+      max-height: clamp(7rem,13vw,12rem);
+      display: block;
+      filter: drop-shadow(0 0.4rem 1.1rem rgba(0,0,0,0.8));
+    }
+    .eb-preloader-text,
+    .eb-preloader-sub {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    .eb-preloader-text { animation: eb-fade-up 0.7s ease-out 1s forwards; }
+    .eb-preloader-sub { animation: eb-fade-up 0.7s ease-out 1.2s forwards; }
+    .eb-preloader-text-img img,
+    .eb-preloader-sub-img img {
+      max-width: clamp(10rem,18vw,16rem);
+      height: auto;
+      display: block;
+      filter: invert(1) brightness(2) drop-shadow(0 0.25rem 0.75rem rgba(0,0,0,0.9));
+    }
+    @keyframes eb-roll-in {
+      0% { transform: translateX(-120vw) rotate(-720deg) scale(0.9); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+    @keyframes eb-fade-up {
+      0% { opacity: 0; transform: translateY(0.625rem); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     /* HEADER */
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(247, 245, 240, 0.96);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(clamp(0.9rem,1.6vw,1.2rem));
+      background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.75),transparent);
+      border-bottom:0.07rem solid rgba(148,163,184,0.18);
     }
-
-    .header-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+    .nav{
+      min-height:var(--header-height);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:clamp(1rem,3vw,1.6rem);
+      flex-wrap:wrap;
     }
-
-    .brand {
-      font-family: "Playfair Display", serif;
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--green-dark);
-      text-transform: none;
-      white-space: nowrap;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:clamp(0.65rem,1.5vw,0.9rem);
     }
-
-    .main-nav {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 14px;
-      color: var(--text-soft);
-      font-weight: 600;
+    .brand-logo{
+      width:clamp(2.6rem,3.5vw,3rem);
+      height:clamp(2.6rem,3.5vw,3rem);
+      border-radius:50%;
+      overflow:hidden;
+      border:0.12rem solid var(--primary);
+      box-shadow:0 0.4rem 1rem rgba(0,0,0,0.8);
+      flex-shrink:0;
     }
-
-    .main-nav a {
-      position: relative;
-      padding: 4px 0;
+    .brand-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
-
-    .main-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      width: 0;
-      height: 2px;
-      background: var(--green);
-      transition: width 0.2s ease-out;
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
     }
-
-    .main-nav a:hover::after {
-      width: 100%;
+    .brand-main{
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.05rem,0.8vw + 1rem,1.3rem);
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
-
-    .btn-nav {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--green);
-      color: var(--green-dark);
-      font-size: 13px;
-      font-weight: 700;
+    .brand-sub{
+      font-size:clamp(0.7rem,0.4vw + 0.6rem,0.85rem);
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      color:var(--muted);
     }
-
-    .btn-nav:hover {
-      background: var(--green-soft);
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:clamp(0.5rem,1.2vw,0.9rem);
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
-
-    .nav-toggle {
-      display: none;
-      border: none;
-      background: transparent;
-      font-size: 24px;
-      cursor: pointer;
+    .nav-links a{
+      font-size:clamp(0.7rem,0.3vw + 0.65rem,0.85rem);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      padding:clamp(0.45rem,1vw,0.75rem) clamp(0.65rem,1.6vw,1.1rem);
+      border-radius:999px;
+      color:var(--muted);
+      border:0.07rem solid transparent;
+      transition:all .18s ease;
+      background:rgba(0,0,0,0.5);
+    }
+    .nav-links a:hover{
+      color:var(--text);
+      border-color:rgba(148,163,184,0.7);
+      background:rgba(5,5,5,0.8);
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.5rem;
+      padding:clamp(0.65rem,1.6vw,0.95rem) clamp(0.9rem,2vw,1.2rem);
+      border-radius:999px;
+      font-size:clamp(0.75rem,0.3vw + 0.7rem,0.95rem);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      border:0.07rem solid transparent;
+      cursor:pointer;
+      transition:all .2s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(to right,#111112,#000);
+      border-color:rgba(148,163,184,0.45);
+      box-shadow:0 1rem 2.4rem rgba(0,0,0,0.55);
+      color:#fff;
+    }
+    .btn-primary:hover{
+      transform:translateY(-0.06rem) scale(1.01);
+      box-shadow:0 1.4rem 2.8rem rgba(0,0,0,0.75);
+    }
+    .btn-outline{
+      border-color:rgba(148,163,184,0.6);
+      background:rgba(5,5,5,0.7);
+      color:var(--text);
+    }
+    .btn-outline:hover{
+      background:rgba(0,0,0,0.95);
+      border-color:rgba(148,163,184,0.9);
     }
 
     /* HERO */
-
-    .hero-wrapper {
-      position: relative;
-      height: 160vh;
-      width: 100%;
+    .hero{padding:0;}
+    .hero-full{
+      position:relative;
+      min-height:calc(100vh - var(--header-height));
+      overflow:hidden;
+    }
+    @supports (height: 100dvh){
+      .hero-full{min-height:calc(100dvh - var(--header-height));}
+    }
+    .hero-slider{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+    .hero-slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity .7s ease;
+    }
+    .hero-slide:first-child{position:relative;}
+    .hero-slide.is-active{opacity:1;}
+    .hero-slide img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      image-rendering:auto;
+      object-position:center center;
+    }
+    .hero-gradient{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,0.55),rgba(0,0,0,0.08));
+      pointer-events:none;
+    }
+    .hero-cta-wrapper{
+      position:absolute;
+      left:50%;
+      bottom:clamp(1.5rem,3vw,3rem);
+      transform:translateX(-50%);
+      display:flex;
+      flex-direction:row;
+      gap:clamp(0.8rem,1.6vw,1.4rem);
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      z-index:30;
+      width:min(92vw,42rem);
+    }
+    .hero-cta{
+      padding:clamp(0.75rem,1.6vw,1rem) clamp(1.2rem,2.6vw,1.7rem);
+      border-radius:999px;
+      font-size:clamp(0.8rem,0.35vw + 0.75rem,1rem);
+      font-weight:600;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      text-align:center;
+      border:0.07rem solid transparent;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:clamp(12rem,24vw,15rem);
+      backdrop-filter:blur(0.35rem);
+    }
+    .hero-cta-primary{
+      background:linear-gradient(to right,#111112,#000);
+      border-color:rgba(148,163,184,0.55);
+      color:#fff;
+      box-shadow:0 1rem 2.5rem rgba(0,0,0,0.7);
+    }
+    .hero-cta-outline{
+      background:rgba(0,0,0,0.7);
+      border-color:rgba(148,163,184,0.8);
+      color:#f9fafb;
     }
 
-    .hero {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      min-height: 520px;
-      color: var(--white);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* SECTIONS */
+    section{
+      padding:clamp(3.25rem,6vw,5.5rem) 0;
+      border-top:0.07rem solid rgba(15,15,15,0.9);
+    }
+    .section-header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:clamp(0.75rem,1.8vw,1.2rem);
+      margin-bottom:clamp(1.5rem,3vw,2.2rem);
+      flex-wrap:wrap;
+    }
+    .section-title{
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.35rem,0.9vw + 1.15rem,1.85rem);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .section-tagline{
+      font-size:clamp(0.85rem,0.4vw + 0.75rem,1rem);
+      color:var(--muted);
+      max-width:24rem;
     }
 
-    .hero-img {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.25s ease-out, border-radius 0.25s ease-out;
-      border-radius: 0;
+    /* ABOUT */
+    .about-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));
+      gap:clamp(1.1rem,2vw,1.6rem);
+      align-items:stretch;
+    }
+    .about-card{
+      background:var(--surface-soft);
+      border-radius:var(--radius-xl);
+      padding:clamp(1.25rem,2vw,1.6rem) clamp(1.25rem,2vw,1.6rem) clamp(1.1rem,1.8vw,1.4rem);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      box-shadow:var(--shadow-soft);
+      font-size:clamp(0.9rem,0.35vw + 0.85rem,1.05rem);
+      line-height:1.65;
+      color:var(--muted);
+    }
+    .about-card h3{
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.1rem,0.6vw + 1rem,1.25rem);
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      margin-bottom:0.5rem;
+      color:var(--text);
+    }
+    .about-points{
+      margin-top:0.75rem;
+      display:grid;
+      gap:0.35rem;
+      font-size:clamp(0.85rem,0.3vw + 0.8rem,0.95rem);
+    }
+    .about-points span::before{
+      content:"• ";
+      color:var(--primary);
+    }
+    .about-photo{
+      position:relative;
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      border:0.07rem solid rgba(31,31,31,0.95);
+      background:#050505;
+      box-shadow:var(--shadow-soft);
+    }
+    .about-photo img{
+      width:100%;
+      height:100%;
+      max-height:clamp(18rem,40vw,24rem);
+      object-fit:cover;
+      transform:scale(1.02);
+      transition:transform .5s ease, filter .5s ease;
+    }
+    .about-photo:hover img{
+      transform:scale(1.06);
+      filter:brightness(1.03);
+    }
+    .about-photo-tag{
+      position:absolute;
+      left:clamp(0.75rem,1.8vw,1rem);
+      bottom:clamp(0.75rem,1.8vw,1rem);
+      padding:0.6rem 0.85rem;
+      border-radius:999px;
+      background:rgba(0,0,0,0.9);
+      border:0.07rem solid rgba(148,163,184,0.6);
+      font-size:clamp(0.65rem,0.4vw + 0.55rem,0.8rem);
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:var(--muted);
     }
 
-    .hero-img::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(5, 20, 10, .55),
-        rgba(5, 20, 10, .75)
-      );
+    /* SERVICES */
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));
+      gap:clamp(1rem,2vw,1.5rem);
+    }
+    .card{
+      background:radial-gradient(circle at top left,#181818 0,#050505 60%);
+      border-radius:var(--radius-lg);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      padding:clamp(1rem,2vw,1.4rem) clamp(1rem,2vw,1.4rem) clamp(0.9rem,1.6vw,1.1rem);
+      display:flex;
+      flex-direction:column;
+      gap:0.4rem;
+      box-shadow:0 1.1rem 2.5rem rgba(0,0,0,0.55);
+    }
+    .card-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:0.4rem;
+    }
+    .card-title{
+      font-size:clamp(0.95rem,0.3vw + 0.9rem,1.05rem);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .card-price{
+      font-size:clamp(0.95rem,0.3vw + 0.9rem,1.05rem);
+      font-weight:600;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#fecaca;
+    }
+    .card-desc{
+      font-size:clamp(0.85rem,0.3vw + 0.8rem,0.95rem);
+      color:var(--muted);
+    }
+    .card-label{
+      font-size:clamp(0.7rem,0.3vw + 0.65rem,0.8rem);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:#f97373;
     }
 
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 72px 20px;
-      text-align: left;
+    /* GALLERY */
+    .gallery-shell{
+      border-radius:var(--radius-xl);
+      background:radial-gradient(circle at top,#181818 0,#050505 60%);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      padding:clamp(1rem,2vw,1.3rem) clamp(1rem,2vw,1.4rem);
+      box-shadow:var(--shadow-soft);
+    }
+    .gallery-track{position:relative;}
+    .gallery-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr));
+      gap:clamp(0.65rem,1.2vw,1rem);
+    }
+    .gallery-row:not(.is-active){display:none;}
+    .shot{
+      position:relative;
+      aspect-ratio:3/4;
+      max-height:clamp(16rem,34vw,24rem);
+      overflow:hidden;
+      border-radius:0.9rem;
+      border:0.07rem solid rgba(30,30,30,0.9);
+      background:#050505;
+      cursor:zoom-in;
+    }
+    .shot img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .4s ease, filter .4s ease;
+      transform:scale(1.02);
+    }
+    .shot:hover img{
+      transform:scale(1.06);
+      filter:brightness(1.02);
+    }
+    .gallery-controls{
+      margin-top:clamp(0.8rem,1.4vw,1rem);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:clamp(0.7rem,1.2vw,1rem);
+      flex-wrap:wrap;
+    }
+    .gallery-btn{
+      padding:0.65rem 1rem;
+      border-radius:999px;
+      border:0.07rem solid rgba(148,163,184,0.7);
+      background:rgba(15,23,42,0.9);
+      color:var(--text);
+      font-size:clamp(0.8rem,0.3vw + 0.75rem,0.95rem);
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      cursor:pointer;
+    }
+    .gallery-btn:hover{background:rgba(15,23,42,1);}
+    .gallery-status{
+      font-size:clamp(0.75rem,0.3vw + 0.7rem,0.9rem);
+      color:var(--muted);
+    }
+    .gallery-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:80;
+      padding:clamp(1rem,4vw,2.4rem);
+    }
+    .gallery-modal.is-visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .gallery-modal img{
+      max-width:min(92vw,72rem);
+      max-height:92vh;
+      border-radius:1rem;
+      box-shadow:0 1.5rem 3.5rem rgba(0,0,0,0.9);
+    }
+    .gallery-hint{
+      margin:clamp(0.8rem,1.4vw,1.1rem) auto 0;
+      padding:0.5rem 1rem;
+      display:inline-flex;
+      align-items:center;
+      gap:0.55rem;
+      color:var(--muted);
+      background:rgba(15,15,15,0.72);
+      border:0.08rem solid rgba(148,163,184,0.5);
+      border-radius:999px;
+      font-size:clamp(0.87rem,0.32vw + 0.8rem,0.98rem);
+      letter-spacing:.1em;
+      backdrop-filter:blur(0.25rem);
+      box-shadow:0 1rem 2.4rem rgba(0,0,0,0.35);
+    }
+    .gallery-hint-icon{
+      font-size:1.05em;
+      color:#e5e7eb;
     }
 
-    .hero-kicker {
-      font-family: "Nunito", sans-serif;
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: .9;
-      margin-bottom: 10px;
-      font-weight: 700;
+    /* INFO + HOURS */
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));
+      gap:clamp(1rem,2vw,1.5rem);
+      align-items:flex-start;
+    }
+    .info-card{
+      background:var(--surface-soft);
+      border-radius:var(--radius-xl);
+      padding:clamp(1.1rem,1.8vw,1.4rem);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      box-shadow:var(--shadow-soft);
+    }
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      font-size:clamp(0.85rem,0.3vw + 0.8rem,0.95rem);
+      padding:0.4rem 0;
+      border-bottom:0.07rem dashed rgba(55,55,55,0.8);
+      gap:0.7rem;
+    }
+    .info-row:last-child{border-bottom:none;}
+    .info-label{
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--muted);
+      font-size:clamp(0.7rem,0.3vw + 0.65rem,0.8rem);
+    }
+    .hours-card{
+      background:var(--surface-soft);
+      border-radius:var(--radius-xl);
+      padding:clamp(1.1rem,1.8vw,1.4rem);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      box-shadow:var(--shadow-soft);
+      margin-bottom:clamp(0.9rem,1.6vw,1.2rem);
+      max-width:28rem;
+    }
+    .hours-title{
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--muted);
+      font-size:clamp(0.7rem,0.3vw + 0.65rem,0.8rem);
+      margin-bottom:0.4rem;
+    }
+    .hours-lines{
+      margin:0;
+      font-size:clamp(0.9rem,0.35vw + 0.85rem,1rem);
+      line-height:1.6;
     }
 
-    .hero-title {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(32px, 4vw, 42px);
-      font-weight: 700;
-      margin-bottom: 8px;
+    /* MAP */
+    .map-card{
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      border:0.07rem solid rgba(31,31,31,0.95);
+      box-shadow:var(--shadow-soft);
+      background:#050505;
+    }
+    .map{
+      width:100%;
+      height:clamp(16rem,32vw,22rem);
+      border:0;
+      display:block;
+    }
+    .map-caption{
+      font-size:clamp(0.8rem,0.3vw + 0.75rem,0.95rem);
+      padding:0.7rem 0.85rem 0.75rem;
+      color:var(--muted);
+      border-top:0.07rem solid rgba(31,31,31,0.9);
+      background:rgba(0,0,0,0.92);
     }
 
-    .hero-subtitle {
-      font-size: 15px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      opacity: .9;
-      margin-bottom: 18px;
-      font-weight: 700;
+    /* CONTACTS */
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+    .contact-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:clamp(1rem,1.8vw,1.4rem);
+      margin-top:clamp(1.1rem,2vw,1.4rem);
+      align-items:center;
+    }
+    .contact-icon{
+      width:clamp(3.2rem,4vw,3.6rem);
+      height:clamp(3.2rem,4vw,3.6rem);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:0.08rem solid rgba(148,163,184,0.6);
+      background:radial-gradient(circle at top,#111827 0,#020617 70%);
+      box-shadow:0 1rem 2.4rem rgba(0,0,0,0.7);
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+      color:#e5e7eb;
+    }
+    .contact-icon svg{
+      width:clamp(1.2rem,1.3vw,1.4rem);
+      height:clamp(1.2rem,1.3vw,1.4rem);
+      display:block;
+    }
+    .contact-icon-wa{
+      background:radial-gradient(circle at top,#22c55e 0,#15803d 70%);
+      border-color:rgba(34,197,94,0.9);
+      color:#ecfdf5;
+    }
+    .contact-icon:hover{
+      transform:translateY(-0.12rem);
+      box-shadow:0 1.4rem 3rem rgba(0,0,0,0.9);
     }
 
-    .hero-text {
-      max-width: 640px;
-      font-size: 15px;
-      opacity: .96;
-      margin-bottom: 14px;
+    /* STICKY WHATSAPP */
+    .wa-sticky{
+      position:fixed;
+      right:clamp(1rem,2vw,1.4rem);
+      bottom:clamp(1rem,2vw,1.4rem);
+      z-index:60;
+      display:flex;
+      align-items:center;
+      gap:0.65rem;
+      padding:clamp(0.65rem,1.5vw,1rem) clamp(1rem,2.4vw,1.6rem);
+      border-radius:999px;
+      font-size:clamp(0.75rem,0.35vw + 0.7rem,0.9rem);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#e5f9f0;
+      background:linear-gradient(135deg,rgba(34,197,94,0.22),rgba(6,95,70,0.85));
+      border:0.07rem solid rgba(74,222,128,0.8);
+      box-shadow:0 1.1rem 2.8rem rgba(22,163,74,0.75);
+      backdrop-filter:blur(clamp(0.85rem,1.6vw,1.2rem)) saturate(1.4);
+      -webkit-backdrop-filter:blur(clamp(0.85rem,1.6vw,1.2rem)) saturate(1.4);
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(0.4rem) scale(.97);
+      transition:opacity .25s ease-out, transform .25s ease-out, box-shadow .25s ease-out, background .25s ease-out, border-color .25s ease-out;
+
+    }
+    .wa-sticky svg{
+      width:clamp(1.35rem,1.6vw,1.5rem);
+      height:clamp(1.35rem,1.6vw,1.5rem);
+    }
+    .wa-sticky:hover{
+      transform:translateY(-0.1rem) scale(1.01);
+      box-shadow:0 1.5rem 3.4rem rgba(22,163,74,0.82);
+      background:linear-gradient(135deg,rgba(34,197,94,0.32),rgba(6,95,70,0.95));
+    }
+    .wa-sticky.is-visible{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0) scale(1);
     }
 
-    .hero-note {
-      font-size: 14px;
-      opacity: .9;
-      margin-bottom: 26px;
+    footer{
+      padding:clamp(2rem,4vw,3rem) 0;
+      border-top:0.07rem solid rgba(15,15,15,0.85);
+      background:linear-gradient(to top,rgba(0,0,0,0.6),rgba(0,0,0,0.3));
+    }
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:0.8rem;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:clamp(0.8rem,0.35vw + 0.75rem,0.95rem);
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    /* PRODUCT MODAL */
+    .product-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.82);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .3s ease;
+      z-index:90;
+      padding:clamp(1rem,3vw,2.2rem);
+    }
+    .product-modal.is-visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .product-modal-inner{
+      width:min(68rem,94vw);
+      background:var(--surface);
+      border-radius:var(--radius-xl);
+      padding:clamp(1.4rem,2.5vw,2rem);
+      border:0.07rem solid rgba(31,31,31,0.95);
+      box-shadow:0 1.6rem 3.2rem rgba(0,0,0,0.75);
+      position:relative;
+      overflow:hidden;
+    }
+    .product-modal-close{
+      position:absolute;
+      top:clamp(0.9rem,1.6vw,1.2rem);
+      right:clamp(0.9rem,1.6vw,1.2rem);
+      background:rgba(0,0,0,0.75);
+      border:0.07rem solid rgba(148,163,184,0.6);
+      color:var(--text);
+      border-radius:50%;
+      width:clamp(2.2rem,3vw,2.6rem);
+      height:clamp(2.2rem,3vw,2.6rem);
+      font-size:1.1rem;
+      cursor:pointer;
+    }
+    .product-modal-title{
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.2rem,0.7vw + 1.1rem,1.5rem);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .product-modal-sub{
+      color:var(--muted);
+      margin-top:0.4rem;
+      font-size:clamp(0.9rem,0.35vw + 0.85rem,1rem);
+    }
+    .product-list-view{margin-top:clamp(1.2rem,2vw,1.6rem);}
+    .product-cat-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+      gap:clamp(0.9rem,1.8vw,1.4rem);
+    }
+    .product-cat-card{
+      background:radial-gradient(circle at top,#181818 0,#050505 70%);
+      border:0.07rem solid rgba(40,40,40,0.95);
+      border-radius:var(--radius-lg);
+      overflow:hidden;
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .product-cat-card:hover{
+      transform:translateY(-0.15rem);
+      box-shadow:0 1.2rem 2.6rem rgba(0,0,0,0.7);
+      border-color:rgba(148,163,184,0.6);
+    }
+    .product-cat-image{
+      height:clamp(9rem,18vw,12rem);
+      overflow:hidden;
+      background:#050505;
+    }
+    .product-cat-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+    }
+    .product-cat-label{
+      padding:0.8rem 1rem;
+      text-align:center;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:clamp(0.85rem,0.3vw + 0.8rem,0.95rem);
+      color:var(--text);
+    }
+    .product-detail-view{
+      display:none;
+      margin-top:clamp(1rem,2vw,1.4rem);
+    }
+    .product-back-btn{
+      padding:0.65rem 1rem;
+      border-radius:999px;
+      border:0.07rem solid rgba(148,163,184,0.7);
+      background:rgba(0,0,0,0.6);
+      color:var(--text);
+      cursor:pointer;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:clamp(0.8rem,0.3vw + 0.75rem,0.95rem);
+      margin-bottom:0.8rem;
+    }
+    .product-detail-title{
+      font-size:clamp(1.05rem,0.5vw + 0.95rem,1.25rem);
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      margin-bottom:0.8rem;
+    }
+    .product-detail-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));
+      gap:clamp(0.75rem,1.6vw,1.2rem);
+    }
+    .product-detail-grid figure{
+      border-radius:1rem;
+      overflow:hidden;
+      border:0.07rem solid rgba(40,40,40,0.95);
+      background:#050505;
+      cursor:zoom-in;
+      aspect-ratio:1/1;
+    }
+    .product-detail-grid img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+    }
+    #product-zoom-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:95;
+      padding:clamp(1rem,4vw,2.2rem);
+    }
+    #product-zoom-modal.is-visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+    #product-zoom-modal img{
+      max-width:min(92vw,70rem);
+      max-height:92vh;
+      border-radius:1rem;
+      box-shadow:0 1.4rem 3.2rem rgba(0,0,0,0.9);
     }
 
-    .hero.hide-text .hero-inner {
-      opacity: 0;
-      transition: opacity 0.25s ease-out;
+    /* REVEAL */
+    .reveal{
+      opacity:0;
+      transform:translateY(1rem);
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
     }
 
-    .hero.shrink .hero-img {
-      border-radius: 28px;
-      box-shadow: 0 26px 60px rgba(0, 0, 0, 0.26);
+    /* RESPONSIVE TWEAKS */
+    @media (max-width: 56rem){
+      .hero-cta-wrapper{width:95vw;}
+      .wa-sticky{right:clamp(0.9rem,3vw,1.3rem); bottom:clamp(0.9rem,3vw,1.3rem);}
     }
-
-    #elegant-slogan {
-      opacity: 0;
-      transform: translateY(16px) scale(0.98);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      text-align: center;
-      font-family: "Great Vibes", "Playfair Display", serif;
-      font-size: 34px;
-      font-style: normal;
-      letter-spacing: 0.02em;
-      color: var(--green-dark);
-      padding: 10px 20px 0;
-      max-width: 880px;
-      margin: -150px auto 0;
-      line-height: 1.4;
-    }
-
-    #elegant-slogan.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    @media (max-width: 800px) {
-      .hero {
-        height: auto;
-        min-height: 0;
+    @media (max-width: 42rem){
+      .nav{justify-content:center;}
+      .hero-cta-wrapper{flex-direction:column;}
+      .hero-cta{width:100%;}
+      .footer-inner{justify-content:center;}
+      /* GALLERIA MOBILE: SCORRIMENTO ORIZZONTALE PULITO */
+      .gallery-track{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        padding-bottom:0.25rem;
+        scroll-snap-type:x mandatory;
       }
 
-      .hero-inner {
-        padding: 88px 18px 72px;
+      .gallery-row{
+        display:grid;
+        grid-auto-flow:column;     /* tutte le foto in una sola riga */
+        grid-auto-columns:80vw;    /* ogni foto ~80% dello schermo */
+        grid-template-columns:none;/* disattiva le colonne auto-fit desktop */
+        gap:0.75rem;
       }
 
-      .hero-actions {
-        flex-direction: column;
-        align-items: flex-start;
+      .shot{
+        max-height:none;
+        height:auto;
+        min-height:0;
+        aspect-ratio:3/4;          /* formato verticale */
+        scroll-snap-align:center;  /* si “aggancia” bene allo scroll */
       }
 
-      /* Evita che lo slogan si sovrapponga all'immagine su mobile */
-      #elegant-slogan {
-        margin: 18px auto 22px;
-        padding: 6px 18px 0;
-        font-size: 26px;
-        line-height: 1.3;
+        /* HERO MOBILE: foto a riempimento sfondo */
+      .hero-full{
+        min-height:100vh;
       }
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: var(--white);
-      padding: 12px 22px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out,
-        filter 0.15s ease-out;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.04);
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.22);
-    }
-
-    .btn-ghost {
-      background: rgba(247, 245, 240, 0.95);
-      color: var(--green-dark);
-      padding: 12px 22px;
-      border-radius: 999px;
-      font-size: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 700;
-    }
-
-    .btn-ghost:hover {
-      background: #ffffff;
-    }
-
-    /* SEZIONI GENERALI */
-
-    .section {
-      padding: 56px 20px 72px;
-    }
-
-    .section-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .section-kicker {
-      font-size: 12px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--green-dark);
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
-
-    .section-title {
-      font-family: "Playfair Display", serif;
-      font-size: 26px;
-      color: var(--green-dark);
-      margin-bottom: 16px;
-      font-weight: 700;
-    }
-
-    .section-intro {
-      max-width: 620px;
-      font-size: 15px;
-      color: var(--text-soft);
-      margin-bottom: 26px;
-    }
-
-    /* BLOCCO PROFILO · FAMIGLIA, CASA, PATRIMONIO */
-
-    #chi-sono {
-      padding: 72px 20px 80px;
-      background: #f7f5f0;
-    }
-
-    #chi-sono .section-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 28px 26px 32px;
-      background: #ffffff;
-      border-radius: 28px;
-      box-shadow: 0 18px 52px rgba(0, 0, 0, 0.06);
-    }
-
-    .section-profile-title {
-      margin-bottom: 26px;
-    }
-
-    .profile-layout {
-      padding: 8px 4px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 32px;
-      align-items: start;
-    }
-
-    .profile-main {
-      position: relative;
-      padding: 16px 18px 12px;
-      background: linear-gradient(180deg, #fbfaf7 0%, #ffffff 100%);
-      border-radius: 22px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
-    }
-
-    .profile-scroll-hint {
-      display: none;
-    }
-
-    .profile-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 12px;
-    }
-
-    .profile-meta {
-      display: grid;
-      grid-template-columns: repeat(2, auto);
-      gap: 6px 14px;
-      font-size: 12px;
-      color: var(--text-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 700;
-    }
-
-    .profile-main-intro {
-      font-size: 15px;
-      color: var(--text-main);
-      margin-bottom: 16px;
-      line-height: 1.75;
-    }
-
-    .profile-comment {
-      background: #ffffff;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-size: 14px;
-      line-height: 1.65;
-      color: var(--text-main);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
-      margin-bottom: 18px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-
-    .profile-points {
-      list-style: none;
-      display: grid;
-      gap: 8px;
-      margin: 0 0 18px;
-      padding: 0;
-    }
-
-    .profile-points li {
-      font-size: 13px;
-      color: var(--text-soft);
-      line-height: 1.65;
-      padding: 10px 12px;
-      border: none;
-      border-radius: 12px;
-      background: #f9f6ee;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px;
-      align-items: start;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-    }
-
-    .profile-points li::before {
-      content: "—";
-      color: var(--text-soft);
-      font-weight: 700;
-      margin-top: 1px;
-    }
-
-    .profile-areas {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 18px;
-      margin-top: 2px;
-    }
-
-    .profile-area {
-      border-radius: 18px;
-      padding: 18px 18px 20px;
-      background: #ffffff;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(20, 55, 38, 0.08);
-      border-left: 5px solid var(--green);
-    }
-
-    .profile-area h3 {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--green-dark);
-      margin-bottom: 8px;
-      letter-spacing: 0.01em;
-    }
-
-    .profile-area p {
-      font-size: 14px;
-      color: var(--text-soft);
-      line-height: 1.7;
-    }
-
-    .profile-photo-card {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden; 
-      background: none;
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: none;
-      box-shadow: none;        /* 🔥 RIMOSSO PER ELIMINARE IL DOPPIO BORDO */
-      transform: translateY(60px);
-      opacity: 0;
-      transition: transform 0.55s ease, opacity 0.55s ease;
-    }
-
-
-    .profile-photo-card.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .profile-photo-card img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 22px;
-      box-shadow: none;
-    }
-
-    .profile-photo-overlay {
-      position: static;
-      margin: 0 6px 4px 6px;
-      background: #ffffff;
-      color: var(--text-main);
-      border-radius: 14px;
-      padding: 12px 14px 12px;
-      font-size: 12px;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
-      backdrop-filter: none;
-    }
-
-    .profile-photo-name {
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-
-    .profile-photo-role {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      opacity: .75;
-      font-weight: 700;
-    }
-
-    .profile-photo-note {
-      margin-top: 4px;
-      font-size: 11px;
-      opacity: .85;
-    }
-
-    @media (min-width: 961px) {
-      .profile-photo-card {
-        height: 100%;
+      @supports (height:100dvh){
+        .hero-full{
+          min-height:100dvh;
+        }
       }
 
-      .profile-photo-card img {
-        height: 100%;
-      }
-    }
-
-    @media (max-width: 960px) {
-      .profile-layout {
-        grid-template-columns: 1fr;
-        padding: 24px 22px 26px;
+      .hero-slide.auto-mobile img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        object-position:center center;
       }
 
-      .profile-header {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .profile-main {
-        max-height: none;
-      }
-
-      .profile-meta {
-        grid-template-columns: 1fr;
-      }
-
-      .profile-photo-card {
-        max-height: none;
-        height: auto;
-      }
-
-      .profile-areas {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      #chi-sono {
-        padding-top: 64px;
-        padding-bottom: 70px;
-      }
-
-      .profile-layout {
-        border-radius: 22px;
-      }
-    }
-
-    /* AREE DI ATTIVITÀ */
-
-    .areas-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .area-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 18px 18px 20px;
-      border: 1px solid rgba(0,0,0,0.04);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.05);
-    }
-
-    .area-title {
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--green-dark);
-      font-size: 15px;
-    }
-
-    .area-tag {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      opacity: .85;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .area-text {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-    }
-
-    .area-note {
-      font-size: 12px;
-      color: var(--green);
-      opacity: .9;
-      font-weight: 600;
-    }
-
-    /* CONTATTI */
-
-    #contatti {
-      padding: 48px 20px 64px;
-      background: var(--green-soft);
-    }
-
-    #contatti .section-inner {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    #contatti h2 {
-      font-family: "Playfair Display", serif;
-      font-size: 22px;
-      color: var(--green-dark);
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-
-    #contatti p {
-      font-size: 14px;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    #contatti p strong {
-      font-weight: 700;
-    }
-
-    #contatti a {
-      color: var(--green);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    #contatti a:hover {
-      text-decoration: underline;
-    }
-
-    /* FOOTER */
-
-    .site-footer {
-      padding: 18px 20px 24px;
-      font-size: 12px;
-      color: #6a726a;
-      background: #f0ebe1;
-      border-top: 1px solid rgba(0,0,0,0.04);
-    }
-
-    .footer-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-weight: 500;
-    }
-
-    /* RESPONSIVE GENERALE */
-
-    @media (max-width: 960px) {
-      .areas-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 800px) {
-      .header-inner {
-        padding-inline: 16px;
-      }
-
-      .main-nav {
-        display: none;
-      }
-
-      .nav-toggle {
-        display: block;
-        color: var(--green-dark);
-      }
-
-      .areas-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .brand {
-        font-size: 17px;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .main-nav.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        right: 16px;
-        top: 56px;
-        padding: 12px 16px;
-        background: rgba(247, 245, 240, 0.98);
-        border-radius: 16px;
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-      }
-    }
-
-    /* TIPOGRAFIA SU SCHERMI GRANDI (PC GRANDI) */
-
-    @media (min-width: 1200px) {
-      body {
-        font-size: 17px;
-      }
-
-      .brand {
-        font-size: 21px;
-      }
-
-      .main-nav {
-        font-size: 15px;
-      }
-
-      .hero-title {
-        font-size: clamp(40px, 3.2vw, 52px);
-      }
-
-      .hero-subtitle {
-        font-size: 16px;
-      }
-
-      .hero-text,
-      .hero-note,
-      .section-intro,
-      .profile-main-intro {
-        font-size: 16px;
-      }
-
-      .section-title {
-        font-size: 30px;
-      }
-
-      .profile-area p,
-      .area-text {
-        font-size: 14px;
-      }
-
-      #contatti h2 {
-        font-size: 24px;
-      }
-
-      #contatti p {
-        font-size: 15px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .profile-photo-card {
-        transition: none;
-        transform: none;
-        opacity: 1;
-      }
     }
   </style>
 </head>
 <body>
+  <!-- PRELOADER -->
+  <div class="eb-preloader-overlay" id="eb-preloader" aria-label="Caricamento EscoBarber">
+      <div class="eb-preloader-inner">
+        <div class="eb-preloader-text eb-preloader-text-img">
+        <img src="img/escobarberscritta.jpg" alt="EscoBarber testo">
+        </div>
+        <div class="eb-preloader-circle">
+        <img src="img/logo.jpg" alt="Logo EscoBarber" class="eb-preloader-logo">
+        </div>
+        <div class="eb-preloader-sub eb-preloader-sub-img">
+        <img src="img/dalbarrioscritta.jpg" alt="Dal Barrio">
+        </div>
+      </div>
+    </div>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">Avvocato Isabella Mugnaini</div>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="img/logo.jpg" alt="Logo EscoBarber">
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">EscoBarber</span>
+        </div>
+      </div>
 
-      <button class="nav-toggle" aria-label="Apri menu" onclick="toggleNav()">☰</button>
-
-      <nav class="main-nav" id="mainNav">
-        <a href="#chi-sono">Chi sono</a>
-        <a href="#aree-attivita">Aree di attività</a>
-        <a href="#contatti">Contatti</a>
-        <a href="#contatti" class="btn-nav">Scrivi su WhatsApp</a>
+      <nav class="nav-links" aria-label="Navigazione principale">
+        <a href="#about">Chi siamo</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#galleria">Tagli</a>
+        <a href="#prodotti">Prodotti</a>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
-  <div class="hero-wrapper">
-    <section class="hero" aria-label="Studio legale civile e di famiglia">
-        <div class="hero-img" style="background-image:
-          url('Immsfondo1.jpg');"
-          role="img" aria-label="Paesaggio toscano con colline e cipressi"></div>
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-label="Hero EscoBarber">
+      <div class="hero-full">
+        <div class="hero-slider">
+          <figure class="hero-slide is-active">
+            <img src="img/immnegozio1.JPG" alt="Taglio sfumato EscoBarber">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio2.jpg" alt="Servizi barba EscoBarber">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio3.jpg" alt="Interno EscoBarber">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio4.jpg" alt="Dettagli barber shop">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio5.jpg" alt="Dettaglio EscoBarber 5">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio6.jpg" alt="Dettaglio EscoBarber 6">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio7.jpg" alt="Dettaglio EscoBarber 7">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio8.jpg" alt="Dettaglio EscoBarber 8">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio9.jpg" alt="Dettaglio EscoBarber 9">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio10.jpg" alt="Dettaglio EscoBarber 10">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio11.jpg" alt="Dettaglio EscoBarber 11">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio12.jpg" alt="Dettaglio EscoBarber 12">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio13.jpg" alt="Dettaglio EscoBarber 13">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio14.jpg" alt="Dettaglio EscoBarber 14">
+          </figure>
+          <figure class="hero-slide">
+            <img src="img/immnegozio15.jpg" alt="Dettaglio EscoBarber 15">
+          </figure>
+          <!-- qui sotto resta com’era -->
+          <div class="hero-gradient"></div>
+        </div>
 
-    <div class="hero-inner">
-      <div class="hero-kicker">Diritto civile e di famiglia · Barberino Tavarnelle</div>
-      <h1 class="hero-title">Avvocato Isabella Mugnaini</h1>
-      <div class="hero-subtitle">Assistenza legale per famiglie, persone e patrimoni</div>
+          <div class="hero-gradient"></div>
+        </div>
 
-      <p class="hero-text">
-        Supporto a privati, famiglie e professionisti nelle controversie che riguardano la
-        vita quotidiana: rapporti familiari, casa, condominio, locazioni, successioni,
-        responsabilità e crediti.
-      </p>
-      <p class="hero-note">
-        Ricevo su appuntamento e offro consulenza anche da remoto e in mediazione civile telematica.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#contatti" class="btn-primary">Richiedi un contatto</a>
-        <a href="https://wa.me/39XXXXXXXXXX" class="btn-ghost" target="_blank" rel="noopener">
-          Scrivi su WhatsApp
-        </a>
+        <div class="hero-cta-wrapper">
+          <a class="hero-cta hero-cta-primary" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20un%20appuntamento.">
+            Prenota su WhatsApp
+          </a>
+          <a class="hero-cta hero-cta-outline" href="#servizi">
+            Scopri i servizi
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
 
-      </section>
-  </div>
-
-  <div id="elegant-slogan">
-    &ldquo;Chiarezza, competenza e tutela quando ne hai piu bisogno.&rdquo;
-  </div>
-
-  <!-- SEZIONE CHI SONO / PROFILO -->
-  <section class="section" id="chi-sono">
-    <div class="section-inner">
-      <div class="section-profile-title">
-        <div class="section-kicker">Chi sono</div>
-        <h2 class="section-title">Al centro: famiglie, persone e relazioni quotidiane</h2>
-      </div>
-
-      <div class="profile-layout">
-        <!-- COLONNA TESTO -->
-        <div class="profile-main">
-          <div class="profile-scroll-hint">Scorri qui per leggere tutto</div>
-          <p class="profile-main-intro">
-            Seguo le controversie che toccano la vita quotidiana: famiglia, casa, vicinato,
-            beni e responsabilit?. Ambiti che richiedono equilibrio tra relazioni, patrimoni
-            e tempi.
-
-          </p>
-
-          <div class="theme-chips">
-            <span class="theme-chip">Famiglia e persone</span>
-            <span class="theme-chip">Condominio e vicinato</span>
-            <span class="theme-chip">Locazioni e proprietà</span>
-            <span class="theme-chip">Patrimonio e successioni</span>
-            <span class="theme-chip">Responsabilità civile</span>
-            <span class="theme-chip">Bancario e crediti</span>
-          </div>
-
-          <p class="profile-comment">
-            Molte di queste controversie oggi passano prima dalla mediazione civile o dalla
-            negoziazione assistita: accompagno i clienti in questo percorso, spesso anche in
-            modalità telematica, valutando quando conviene trovare un accordo e quando è
-            necessario arrivare al giudice.
-          </p>
-
-          <div class="profile-areas">
-            <div class="profile-area">
-              <h3>Famiglia e persone</h3>
-              <p>
-                Separazioni e divorzi, affidamento e mantenimento dei figli, revisione degli
-                assegni, amministrazioni di sostegno, responsabilità genitoriale.
-              </p>
-            </div>
-
-            <div class="profile-area">
-              <h3>Condominio e rapporti di vicinato</h3>
-              <p>
-                Liti su spese condominiali e parti comuni, rumori e immissioni, infiltrazioni,
-                uso del lastrico solare, regolamenti condominiali.
-              </p>
-            </div>
-
-            <div class="profile-area">
-              <h3>Locazioni abitative e commerciali</h3>
-              <p>
-                Morosità, finita locazione, sfratti, rilascio dell’immobile, canoni concordati,
-                indennità di avviamento, affitti brevi e locazioni turistiche.
-              </p>
-            </div>
-
-            <div class="profile-area">
-              <h3>Proprietà, successioni e diritti reali</h3>
-              <p>
-                Usucapione, servitù di passaggio, confini tra fondi, azioni possessorie, divisioni
-                ereditarie, impugnazioni di testamenti e tutela dei legittimari.
-              </p>
-            </div>
-
-            <div class="profile-area">
-              <h3>Responsabilità civile e assicurazioni</h3>
-              <p>
-                Sinistri stradali, responsabilità medica e sanitaria, responsabilità professionale,
-                danni da cose in custodia o da prodotto difettoso, rapporti con le compagnie.
-              </p>
-            </div>
-
-            <div class="profile-area">
-              <h3>Bancario, finanziario e crediti</h3>
-              <p>
-                Contenzioso su mutui, conti correnti e finanziamenti, contratti d’impresa, appalti
-                privati, recupero crediti e gestione stragiudiziale delle posizioni debitorie.
-              </p>
-            </div>
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Chi Sono</h2>
+            <p class="section-tagline">
           </div>
         </div>
 
-        <!-- COLONNA FOTO -->
-        <aside class="profile-photo-card" aria-label="Avvocato Isabella Mugnaini">
-          <!-- metti il file giusto, es. iim1.jpg -->
-          <img src="iim1.jpg" alt="Avvocato Isabella Mugnaini in un borgo toscano">
-
-          <div class="profile-photo-overlay">
-            <div class="profile-photo-name">Avv. Isabella Mugnaini</div>
-            <div class="profile-photo-role">Avvocato civilista · Toscana</div>
-            <div class="profile-photo-note">
-              Studio a Barberino Tavarnelle, consulenza anche online e in mediazione civile.
+        <div class="about-grid reveal" aria-label="Chi siamo">
+          <article class="about-card">
+            <p>
+              Luis è il fondatore di EscoBarber e il volto che trovi sempre dietro alla poltrona.
+              Nato come barbiere di quartiere, ha portato a Poggibonsi uno stile che unisce
+              cultura chicana, disciplina e attenzione maniacale per i dettagli.Nel negozio non entri solo per “fare i capelli”,
+              ma per uscire in ordine, sicuro e con un look che ti rappresenta davvero.
+            </p>
+            <div class="about-points">
+              <span>Fade, linee precise, finitura rasoio caldo.</span>
+              <span>Prodotti bio e artigianali scelti per volume, tenuta e cura.</span>
+              <span>Ambiente barrio: musica giusta, ritmi veloci, risultati netti.</span>
             </div>
+          </article>
+
+          <figure class="about-photo">
+            <img src="img/immluis.jpg" alt="Poltrona barbershop EscoBarber">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIZI -->
+    <section id="servizi">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Servizi</h2>
+            <p class="section-tagline">
+              Fade, rasature e pacchetti completi. Precisione da studio, vibe di strada.
+            </p>
           </div>
-        </aside>
+        </div>
+
+        <div class="services-grid reveal" aria-label="Servizi barbershop">
+          <article class="card">
+            <div class="card-header">
+              <h3 class="card-title">Taglio</h3>
+              <span class="card-price">€18</span>
+            </div>
+            <p class="card-desc">
+              Fade netti, linee dritte, styling a caldo con prodotti EscoBarber.
+            </p>
+            <span class="card-label">30 minuti</span>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <h3 class="card-title">Barba</h3>
+              <span class="card-price">€15</span>
+            </div>
+            <p class="card-desc">
+              Modellatura, rifinitura a rasoio, panni caldi e balsamo lenitivo.
+            </p>
+            <span class="card-label">30 minuti</span>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <h3 class="card-title">Taglio + Barba</h3>
+              <span class="card-price">€25</span>
+            </div>
+            <p class="card-desc">
+              Pacchetto completo: testa + barba, esperienza piena EscoBarber.
+            </p>
+            <span class="card-label">Pacchetto completo</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERIA -->
+    <section id="galleria">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">I nostri tagli</h2>
+            <p class="section-tagline"></p>
+          </div>
+        </div>
+
+        <div class="gallery-shell reveal" aria-label="Galleria immagini tagli EscoBarber">
+        <div class="gallery-track">
+          <div class="gallery-row is-active">
+            <figure class="shot">
+              <img src="img/cut1.jpg" alt="Taglio sfumato 1">
+            </figure>
+            <figure class="shot">
+              <img src="img/cut2.jpg" alt="Taglio sfumato 2">
+            </figure>
+            <figure class="shot">
+              <img src="img/cut3.jpg" alt="Taglio sfumato 3">
+            </figure>
+            <figure class="shot">
+              <img src="img/cut4.jpg" alt="Taglio sfumato 4">
+            </figure>
+          </div>
+
+          <!-- Galleria extra disattivata: riattiva togliendo i commenti
+          <div class="gallery-row">
+            <figure class="shot">
+              <img src="img/cut5.jpg" alt="Taglio sfumato 5">
+            </figure>
+            <figure class="shot">
+              <img src="img/cut6.jpg" alt="Taglio sfumato 6">
+            </figure>
+          </div>
+          <div class="gallery-row">
+            <figure class="shot"><img src="img/cut7.jpg" alt="Taglio sfumato 7"></figure>
+            <figure class="shot"><img src="img/cut8.jpg" alt="Taglio sfumato 8"></figure>
+            <figure class="shot"><img src="img/cut9.jpg" alt="Taglio sfumato 9"></figure>
+          </div>
+
+          <div class="gallery-row">
+            <figure class="shot"><img src="img/cut10.jpg" alt="Taglio sfumato 10"></figure>
+            <figure class="shot"><img src="img/cut11.jpg" alt="Taglio sfumato 11"></figure>
+            <figure class="shot"><img src="img/cut12.jpg" alt="Taglio sfumato 12"></figure>
+          </div>
+
+          <div class="gallery-row">
+            <figure class="shot"><img src="img/cut13.jpg" alt="Taglio sfumato 13"></figure>
+            <figure class="shot"><img src="img/cut14.jpg" alt="Taglio sfumato 14"></figure>
+            <figure class="shot"><img src="img/cut15.jpg" alt="Taglio sfumato 15"></figure>
+          </div>
+          -->
+          <p class="gallery-hint">
+            Scorri le foto
+            <span class="gallery-hint-icon">↔</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL ZOOM GALLERIA -->
+    <div class="gallery-modal" id="gallery-modal">
+      <img id="gallery-modal-img" alt="Taglio EscoBarber ingrandito">
+    </div>
+
+    <!-- PRODOTTI -->
+    <section id="prodotti">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">I nostri prodotti</h2>
+            <p class="section-tagline"></p>
+          </div>
+        </div>
+
+        <div class="about-grid reveal" aria-label="Linea prodotti EscoBarber">
+          <article class="about-card">
+            <h3>Linea EscoBarber</h3>
+            <p>
+              Prodotti bio, lavorati in modo artigianale e pensati con la linea EscoBarber:
+              quello che usiamo su di te in negozio lo porti anche a casa. Una selezione di prodotti studiata per lavorare bene in poltrona e funzionare anche
+              quando ti sistemi da solo davanti allo specchio: formulazioni bio, texture pulite,
+              profumi che non stancano.
+            </p>
+            <p class="mt-sm">
+              Cera, lacca, schiuma da barba e spray volume: tutto quello che usiamo ogni giorno
+              in negozio, scelto e testato da EscoBarber.
+            </p>
+
+            <div class="about-points mt-md">
+              <span>Formule bio e lavorazione artigianale.</span>
+              <span>Prodotti pensati per fade, volume e definizione.</span>
+              <span>La stessa linea che vedi esposta in negozio.</span>
+            </div>
+          </article>
+
+          <figure class="about-photo products-panel-trigger" id="products-panel-trigger">
+            <img src="img/immtuttiprodotti.jpg" alt="Linea prodotti bio e artigianali EscoBarber">
+            <figcaption class="about-photo-tag">Vedi altro</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL PRODOTTI -->
+    <div class="product-modal" id="products-modal">
+      <div class="product-modal-inner">
+        <button class="product-modal-close" type="button" aria-label="Chiudi">×</button>
+        <h3 class="product-modal-title">Prodotti EscoBarber</h3>
+        <p class="product-modal-sub">
+          Tutta la linea bio e artigianale che trovi in negozio, divisa per categorie.
+        </p>
+
+        <div class="product-list-view" id="products-list-view">
+          <div class="product-cat-grid">
+            <article class="product-cat-card" data-cat="cere">
+              <div class="product-cat-image">
+                <img src="img/immcere1.jpg" alt="Linea cere EscoBarber">
+              </div>
+              <div class="product-cat-label">Cere</div>
+            </article>
+
+            <article class="product-cat-card" data-cat="lacca">
+              <div class="product-cat-image">
+                <img src="img/immlacca.jpg" alt="Linea lacca EscoBarber">
+              </div>
+              <div class="product-cat-label">Lacca</div>
+            </article>
+
+            <article class="product-cat-card" data-cat="schiuma">
+              <div class="product-cat-image">
+                <img src="img/immbalm.jpg" alt="Linea schiuma da barba EscoBarber">
+              </div>
+              <div class="product-cat-label">Schiuma da barba</div>
+            </article>
+
+            <article class="product-cat-card" data-cat="spray">
+              <div class="product-cat-image">
+                <img src="img/immmouse.jpg" alt="Linea spray volume EscoBarber">
+              </div>
+              <div class="product-cat-label">Mousse volume </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="product-detail-view" id="products-detail-view">
+          <button class="product-back-btn" type="button" id="products-back-btn">‹ Torna ai prodotti</button>
+          <h4 class="product-detail-title" id="product-detail-title">Cere</h4>
+          <div class="product-detail-grid" id="product-detail-grid"></div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- AREE DI ATTIVITÀ -->
-  <section class="section" id="aree-attivita">
-    <div class="section-inner">
-      <div class="section-kicker">Aree di attività</div>
-      <h2 class="section-title">Come posso assisterti</h2>
-      <p class="section-intro">
-        Valutiamo insieme la tua situazione concreta e individuiamo il percorso più adatto, con attenzione
-        ai tempi, ai costi e alla tutela dei tuoi interessi.
-      </p>
+    <!-- MODAL ZOOM PRODOTTI -->
+    <div id="product-zoom-modal">
+      <img id="product-zoom-img" alt="Prodotto EscoBarber ingrandito">
+    </div>
 
-      <div class="areas-grid">
-        <article class="area-card">
-          <div class="area-tag">Famiglia e persone</div>
-          <h3 class="area-title">Diritto di famiglia</h3>
-          <p class="area-text">
-            Procedimenti di separazione e divorzio, regolamentazione dei rapporti con i figli,
-            amministrazioni di sostegno e tutela del patrimonio familiare.
-          </p>
-          <div class="area-note">Centralità della persona e dei minori.</div>
-        </article>
+    <!-- MAPPA -->
+    <section id="dove-siamo">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Dove siamo</h2>
+            <p class="section-tagline">
+              Dal barrio al centro di Poggibonsi. Parcheggi comodi, zero complicazioni.
+            </p>
+          </div>
+        </div>
 
-        <article class="area-card">
-          <div class="area-tag">Casa e immobili</div>
-          <h3 class="area-title">Condominio e locazioni</h3>
-          <p class="area-text">
-            Controversie condominiali, affitti abitativi e commerciali, affitti brevi e locazioni
-            turistiche, sfratti per morosità e finita locazione.
-          </p>
-          <div class="area-note">Un punto fermo nei rapporti di vicinato.</div>
-        </article>
-
-        <article class="area-card">
-          <div class="area-tag">Patrimonio</div>
-          <h3 class="area-title">Successioni e diritti reali</h3>
-          <p class="area-text">
-            Usucapione, servitù, confini tra fondi, azioni possessorie, divisioni ereditarie e
-            impugnazioni di testamenti.
-          </p>
-          <div class="area-note">Tutela di beni e passaggi generazionali.</div>
-        </article>
-
-        <article class="area-card">
-          <div class="area-tag">Responsabilità</div>
-          <h3 class="area-title">Responsabilità civile e crediti</h3>
-          <p class="area-text">
-            Sinistri stradali, responsabilità medica e professionale, rapporti con assicurazioni,
-            contratti bancari e finanziari, recupero crediti.
-          </p>
-          <div class="area-note">Valutazione di rischi, danni e convenienza delle azioni.</div>
-        </article>
+        <div class="map-card reveal">
+          <iframe
+            class="map"
+            title="Mappa – EscoBarber"
+            src="https://maps.google.com/maps?q=Via%20Montegrappa%2059%20Poggibonsi%20Siena&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+          <div class="map-caption">
+            Via Montegrappa 59, Poggibonsi (SI) – Apri la mappa per il percorso più veloce.
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CONTATTI -->
-  <section id="contatti">
-    <div class="section-inner">
-      <h2>Contatti</h2>
-      <p><strong>Studio legale Avv. Isabella Mugnaini</strong></p>
-      <p>Piazza Mazzini 2 – 50028 Barberino Tavarnelle (FI)</p>
-      <p>Email: <a href="mailto:info@studio-mugnaini.it">info@studio-mugnaini.it</a></p>
-      <p>Telefono: <a href="tel:+390558079127">+39 055 8079127</a></p>
-      <p>WhatsApp: <a href="https://wa.me/39XXXXXXXXXX" target="_blank" rel="noopener">scrivi al numero dedicato</a></p>
-      <p style="margin-top:10px;font-size:13px;">
-        Ricevo su appuntamento. È possibile concordare anche colloqui online.
-      </p>
-    </div>
-  </section>
+    <!-- ORARI + CONTATTI -->
+    <section id="contatti">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Orari</h2>
+            <p class="section-tagline"></p>
+          </div>
+        </div>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>© <span id="year"></span> Studio legale Avv. Isabella Mugnaini · Tutti i diritti riservati.</div>
-      <div><a href="#">Informativa privacy</a></div>
-    </div>
-  </footer>
+        <div class="hours-card reveal">
+          <p class="hours-lines">
+            Lunedì chiuso<br>
+            Da Martedì a Venerdì:<br>
+            9:00–13:00<br>
+            14:00–20:00<br>
+            Sabato:<br>
+            9:00–18:00<br>
+            Domenica chiuso
+          </p>
+        </div>
+
+        <div class="contact-actions reveal" aria-label="Canali di contatto EscoBarber">
+          <a class="contact-icon contact-icon-wa"
+            href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20info%20su%20taglio%20e%20barba."
+            target="_blank" rel="noopener">
+            <span class="sr-only">WhatsApp</span>
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M19.11 17.33c-.27-.14-1.58-.78-1.83-.87-.25-.09-.43-.14-.62.14-.18.27-.71.87-.87 1.05-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.58-1.5-1.85-.16-.27 0-.41.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.86-2.04-.23-.55-.46-.48-.62-.48h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.34.98 2.64 1.12 2.82.14.18 1.93 2.95 4.68 4.14.65.28 1.15.45 1.54.57.65.21 1.25.18 1.72.11.52-.08 1.58-.64 1.8-1.25.23-.62.23-1.15.16-1.25-.07-.09-.25-.16-.52-.3z"/>
+              <path stroke="currentColor" d="M26 15c0 6.08-4.93 11-11 11-1.88 0-3.65-.47-5.19-1.29L5 26l1.29-4.81A10.94 10.94 0 0 1 4 15C4 8.92 8.92 4 15 4s11 4.92 11 11z"/>
+            </svg>
+          </a>
+
+          <a class="contact-icon contact-icon-mail" href="mailto:info@escobarber.it">
+            <span class="sr-only">Email</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <polyline points="4,6 12,12 20,6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+
+          <a class="contact-icon contact-icon-ig" href="https://www.instagram.com/" target="_blank" rel="noopener">
+            <span class="sr-only">Instagram</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="17" cy="7" r="1.4" fill="currentColor"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- STICKY WHATSAPP -->
+  <a class="wa-sticky" href="https://wa.me/15556350423?text=Ciao%20EscoBarber%2C%20vorrei%20parlare%20con%20te.">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="#fff" d="M19.11 17.33c-.27-.14-1.58-.78-1.83-.87-.25-.09-.43-.14-.62.14-.18.27-.71.87-.87 1.05-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.58-1.5-1.85-.16-.27 0-.41.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.86-2.04-.23-.55-.46-.48-.62-.48h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.34.98 2.64 1.12 2.82.14.18 1.93 2.95 4.68 4.14.65.28 1.15.45 1.54.57.65.21 1.25.18 1.72.11.52-.08 1.58-.64 1.8-1.25.23-.62.23-1.15.16-1.25-.07-.09-.25-.16-.52-.3z"/>
+      <path stroke="#fff" d="M26 15c0 6.08-4.93 11-11 11-1.88 0-3.65-.47-5.19-1.29L5 26l1.29-4.81A10.94 10.94 0 0 1 4 15C4 8.92 8.92 4 15 4s11 4.92 11 11z"/>
+    </svg>
+    <span>Parla con EscoBarber</span>
+  </a>
+
+
+<footer>
+  <div class="container footer-inner">
+    <small>&copy; <span id="year"></span> EscoBarber - Dal Barrio. Tutti i diritti riservati.</small>
+    <small>Partita IVA 01600300527</small>
+    <small><a href="privacy-policy.html">Privacy Policy</a></small>
+    <small><a href="terms.html">Termini e Condizioni</a></small>
+  </div>
+</footer>
+
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Barbershop",
+    "name": "EscoBarber",
+    "image": "https://www.escobarber.it/cover.jpg",
+    "logo": "https://www.escobarber.it/logo.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Via Montegrappa 59",
+      "addressLocality": "Poggibonsi",
+      "addressRegion": "SI",
+      "postalCode": "53036",
+      "addressCountry": "IT"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "43.469",
+      "longitude": "11.149"
+    },
+    "url": "https://www.escobarber.it/",
+    "telephone": "+1-555-635-0423",
+    "priceRange": "€€",
+    "openingHoursSpecification": [
+      {"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"20:00"},
+      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"18:30"}
+    ],
+    "sameAs": ["https://www.instagram.com/"]
+  }
+  </script>
 
   <script>
-    function toggleNav() {
-      const nav = document.getElementById('mainNav');
-      nav.classList.toggle('open');
-    }
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    const heroSection = document.querySelector('.hero');
-    const heroWrapper = document.querySelector('.hero-wrapper');
-    const heroImg = document.querySelector('.hero-img');
-    const slogan = document.getElementById('elegant-slogan');
-    const sloganSpan = slogan ? slogan.querySelector('span') : null;
-    const mqNarrow = window.matchMedia('(max-width: 800px)');
-    const sloganText = '"Chiarezza, competenza e tutela quando ne hai piu bisogno."';
-    const profileSection = document.getElementById('chi-sono');
-    const profilePhotoCard = document.querySelector('.profile-photo-card');
-
-    let typingTimer = null;
-    let typedLength = 0;
-    const typeDelay = 45;
-
-    let scrollConfig = {
-      hideTextAt: 0.15,
-      scaleFactor: 0.5,
-      translateMax: 120,
-      shrinkAt: 0.7,
-      sloganAt: 0.88,
-    };
-
-    function updateScrollConfig() {
-      const narrow = mqNarrow.matches;
-      scrollConfig = {
-        hideTextAt: narrow ? 0.12 : 0.15,
-        scaleFactor: narrow ? 0.35 : 0.5,
-        translateMax: narrow ? 80 : 120,
-        shrinkAt: narrow ? 0.6 : 0.7,
-        sloganAt: narrow ? 0.82 : 0.88,
-      };
-    }
-    updateScrollConfig();
-    mqNarrow.addEventListener('change', updateScrollConfig);
-
-    function resetTyping() {
-      if (typingTimer) {
-        clearInterval(typingTimer);
-        typingTimer = null;
+    // Reveal on scroll
+    (function(){
+      const els = document.querySelectorAll(".reveal");
+      if(!("IntersectionObserver" in window)) {
+        els.forEach(el => el.classList.add("visible"));
+        return;
       }
-      typedLength = 0;
-      if (sloganSpan) sloganSpan.textContent = '';
-    }
+      const io = new IntersectionObserver((entries,obs)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add("visible");
+            obs.unobserve(entry.target);
+          }
+        });
+      },{threshold:0.14});
+      els.forEach(el=>io.observe(el));
+    })();
 
-    function startTyping() {
-      if (!sloganSpan || typingTimer) return;
-      typingTimer = setInterval(() => {
-        if (typedLength < sloganText.length) {
-          sloganSpan.textContent += sloganText.charAt(typedLength);
-          typedLength += 1;
-        } else {
-          clearInterval(typingTimer);
-          typingTimer = null;
+    // HERO SLIDER: SOLO FOTO CHE SCORRONO
+    (function(){
+      const slides = Array.from(document.querySelectorAll(".hero-slide"));
+      if (!slides.length) return;
+
+      const mq = window.matchMedia("(max-width: 768px)");
+      let current = -1;
+
+      function isVisibleSlide(slide){
+        return mq.matches
+          ? !slide.classList.contains("auto-desktop")
+          : !slide.classList.contains("auto-mobile");
+      }
+
+      function nextVisible(startIndex){
+        let idx = startIndex;
+        for(let i = 0; i < slides.length; i++){
+          idx = (idx + 1) % slides.length;
+          if(isVisibleSlide(slides[idx])) return idx;
         }
-      }, typeDelay);
-    }
+        return null; // nessuna slide visibile
+      }
 
-    if (profileSection && profilePhotoCard) {
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting && entry.intersectionRatio > 0.18) {
-                profilePhotoCard.classList.add('show');
-              } else {
-                profilePhotoCard.classList.remove('show');
-              }
+      function showSlide(index){
+        slides.forEach((s,i)=>s.classList.toggle("is-active", i === index));
+      }
+
+      function setFirstVisible(){
+        const first = nextVisible(-1);
+        if(first === null) return;
+        current = first;
+        showSlide(current);
+      }
+
+      // espongo la funzione così possiamo richiamarla dopo la classificazione delle immagini
+      window.ebSetFirstVisibleHero = setFirstVisible;
+
+      setFirstVisible();
+      mq.addEventListener("change", setFirstVisible);
+
+      setInterval(function(){
+        const next = nextVisible(current);
+        if(next === null) return;
+        current = next;
+        showSlide(current);
+      }, 6000);
+    })();
+
+      // GALLERY SLIDER + MODAL
+      (function(){
+        const rows   = Array.from(document.querySelectorAll(".gallery-row"));
+        if (!rows.length) return;
+
+        let current = 0;
+        const status = document.getElementById("gallery-status");
+        const track  = document.querySelector(".gallery-track");
+
+        // solo mobile: stessa breakpoint del CSS (@media max-width: 42rem)
+        function isMobileGallery(){
+          return window.matchMedia &&
+                window.matchMedia("(max-width: 42rem)").matches;
+        }
+
+        function showRow(i){
+          rows.forEach((row,idx)=>row.classList.toggle("is-active", idx === i));
+          if (status) status.textContent = (i+1) + " / " + rows.length;
+
+          // FIX: quando cambio pagina, su mobile riporto lo scroll orizzontale all'inizio
+          if (track && isMobileGallery()){
+            track.scrollLeft = 0;
+          }
+        }
+        showRow(0);
+
+        const prev = document.getElementById("gallery-prev");
+        const next = document.getElementById("gallery-next");
+
+        if (prev && next){
+          prev.addEventListener("click", function(){
+            current = (current - 1 + rows.length) % rows.length;
+            showRow(current);
+          });
+          next.addEventListener("click", function(){
+            current = (current + 1) % rows.length;
+            showRow(current);
+          });
+        }
+
+        const modal = document.getElementById("gallery-modal");
+        const modalImg = document.getElementById("gallery-modal-img");
+
+        if (modal && modalImg){
+          document.querySelectorAll(".shot img").forEach(img=>{
+            img.addEventListener("click", function(){
+              modalImg.src = this.src;
+              modal.classList.add("is-visible");
             });
-          },
-          { threshold: [0, 0.18, 0.32] }
-        );
-        observer.observe(profileSection);
-      } else {
-        profilePhotoCard.classList.add('show');
+          });
+          modal.addEventListener("click", function(){
+            modal.classList.remove("is-visible");
+          });
+        }
+      })();
+
+
+    // MODAL PRODOTTI: CARTELLE + DETTAGLIO + ZOOM
+    (function(){
+      const trigger = document.getElementById("products-panel-trigger");
+      const modal = document.getElementById("products-modal");
+      if(!trigger || !modal) return;
+
+      const listView   = document.getElementById("products-list-view");
+      const detailView = document.getElementById("products-detail-view");
+      const backBtn    = document.getElementById("products-back-btn");
+      const detailTitle= document.getElementById("product-detail-title");
+      const detailGrid = document.getElementById("product-detail-grid");
+
+      const catConfig = {
+        cere: {
+          label: "Cere",
+          images: [
+            { src: "img/prodotto2.jpeg", alt: "Cera capelli 1" },
+            { src: "img/prodotto3.jpeg", alt: "Cera capelli 2" },
+          ]
+        },
+        lacca: {
+          label: "Lacca",
+
+        },
+        schiuma: {
+          label: "Schiuma da barba",
+
+        },
+        spray: {
+          label: "Spray volume",
+
+        }
+      };
+
+      function openModal(){
+        modal.classList.add("is-visible");
+        listView.style.display   = "block";
+        detailView.style.display = "none";
       }
-    }
 
-    function handleHeroScroll() {
-      if (!heroSection || !heroWrapper) return;
-
-      const wrapperHeight = heroWrapper.offsetHeight - window.innerHeight;
-      const wrapperTop = heroWrapper.offsetTop;
-      const scrolled = window.scrollY - wrapperTop;
-      const progress = Math.min(1, Math.max(0, wrapperHeight > 0 ? scrolled / wrapperHeight : 0));
-
-      if (progress > scrollConfig.hideTextAt) {
-        heroSection.classList.add('hide-text');
-      } else {
-        heroSection.classList.remove('hide-text');
+      function closeModal(){
+        modal.classList.remove("is-visible");
       }
 
-      const scale = 1 - (progress * scrollConfig.scaleFactor);
-      const translateY = progress * scrollConfig.translateMax;
+      function openCategory(catKey){
+        const cfg = catConfig[catKey];
+        if(!cfg) return;
 
-      if (heroImg) {
-        heroImg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+        detailTitle.textContent = cfg.label;
+        detailGrid.innerHTML = cfg.images.map(img => (
+          '<figure><img src="'+img.src+'" alt="'+img.alt+'"></figure>'
+        )).join("");
+
+        listView.style.display   = "none";
+        detailView.style.display = "block";
       }
 
-      if (progress > scrollConfig.shrinkAt) {
-        heroSection.classList.add('shrink');
-      } else {
-        heroSection.classList.remove('shrink');
-      }
+      trigger.addEventListener("click", openModal);
 
-      if (slogan) {
-        if (progress > scrollConfig.sloganAt) {
-          slogan.classList.add('show');
-          startTyping();
+      modal.addEventListener("click", function(e){
+        if(e.target === modal || e.target.classList.contains("product-modal-close")){
+          closeModal();
+        }
+      });
+
+      modal.querySelectorAll(".product-cat-card").forEach(card=>{
+        card.addEventListener("click", function(e){
+          e.stopPropagation();
+          const cat = this.dataset.cat;
+          openCategory(cat);
+        });
+      });
+
+      backBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        listView.style.display   = "block";
+        detailView.style.display = "none";
+      });
+
+      const zoomModal = document.getElementById("product-zoom-modal");
+      const zoomImg   = document.getElementById("product-zoom-img");
+
+      if(zoomModal && zoomImg){
+        detailGrid.addEventListener("click", function(e){
+          const img = e.target.tagName === "IMG" ? e.target : null;
+          if(!img) return;
+          zoomImg.src = img.src;
+          zoomModal.classList.add("is-visible");
+        });
+
+        zoomModal.addEventListener("click", function(){
+          zoomModal.classList.remove("is-visible");
+        });
+      }
+    })();
+
+    // PRELOADER
+    document.addEventListener("DOMContentLoaded", function () {
+      const preloader = document.getElementById("eb-preloader");
+      if (!preloader) return;
+
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          preloader.classList.add("hidden");
+        }, 2500);
+      });
+    });
+  </script>
+  </script>
+
+  <!-- WhatsApp: appare solo dopo aver scrollato oltre la home -->
+  <script>
+    (function(){
+      const wa = document.querySelector(".wa-sticky");
+      if (!wa) return;
+
+      function toggleWa(){
+        // quando superi ~una schermata (home), compare
+        const trigger = window.innerHeight * 0.9; 
+        if (window.scrollY > trigger){
+          wa.classList.add("is-visible");
         } else {
-          slogan.classList.remove('show');
-          resetTyping();
+          wa.classList.remove("is-visible");
         }
       }
+
+      // controlla subito allo start
+      toggleWa();
+      window.addEventListener("scroll", toggleWa);
+      window.addEventListener("resize", toggleWa);
+    })();
+  </script>
+
+  <script>
+  // Classificazione autom. delle immagini HERO in mobile / desktop
+  window.addEventListener("load", () => {
+    const imgs = document.querySelectorAll(".hero-slide img");
+
+    imgs.forEach(img => {
+      const slide = img.closest(".hero-slide");
+      if (!slide) return;
+
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+
+      // pulisco eventuali classi vecchie
+      slide.classList.remove("auto-mobile", "auto-desktop");
+
+      if (h > w) {
+        // immagine più alta che larga = verticale = mobile
+        slide.classList.add("auto-mobile");
+      } else {
+        // immagine più larga che alta = orizzontale = desktop
+        slide.classList.add("auto-desktop");
+      }
+    });
+
+    // dopo aver classificato tutte le slide,
+    // dico allo slider di scegliere la prima giusta per lo schermo
+    if (typeof window.ebSetFirstVisibleHero === "function") {
+      window.ebSetFirstVisibleHero();
     }
-
-    window.addEventListener('scroll', handleHeroScroll);
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    handleHeroScroll();
+  });
   </script>
 
 </body>
