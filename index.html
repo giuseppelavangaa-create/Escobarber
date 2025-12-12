@@ -68,6 +68,7 @@
     @media (max-width: 768px) {
       .auto-desktop { display: none !important; }
     }
+    
 
     .container{
       width:var(--container-max);
@@ -403,15 +404,15 @@
       border:0.07rem solid rgba(31,31,31,0.95);
       background:#050505;
       box-shadow:var(--shadow-soft);
-    }
+        }
     .about-photo img{
       width:100%;
-      height:100%;
-      max-height:clamp(18rem,40vw,24rem);
+      height:auto;
       object-fit:cover;
+      aspect-ratio: 3 / 4;
       transform:scale(1.02);
-      transition:transform .5s ease, filter .5s ease;
     }
+
     .about-photo:hover img{
       transform:scale(1.06);
       filter:brightness(1.03);
@@ -740,6 +741,30 @@
       transform:translateY(0) scale(1);
     }
 
+    .coming-soon-toast{
+      position:fixed;
+      left:50%;
+      bottom:clamp(1.2rem,2.6vw,1.8rem);
+      transform:translate(-50%,0.35rem);
+      background:rgba(0,0,0,0.92);
+      color:var(--text);
+      padding:0.75rem 1.4rem;
+      border-radius:var(--radius-lg);
+      border:0.07rem solid var(--border);
+      box-shadow:var(--shadow-soft);
+      font-weight:600;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease, transform .22s ease;
+      z-index:120;
+    }
+    .coming-soon-toast.is-visible{
+      opacity:1;
+      transform:translate(-50%,0);
+    }
+
     footer{
       padding:clamp(2rem,4vw,3rem) 0;
       border-top:0.07rem solid rgba(15,15,15,0.85);
@@ -939,6 +964,7 @@
         padding-bottom:0.25rem;
         scroll-snap-type:x mandatory;
       }
+      
 
       .gallery-row{
         display:grid;
@@ -974,6 +1000,13 @@
       }
 
     }
+
+    .wa-sticky.hide-at-bottom {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(0.6rem) scale(.95);
+}
+
   </style>
 </head>
 <body>
@@ -1601,16 +1634,21 @@
         },
         lacca: {
           label: "Lacca",
-
+          images: []
         },
         schiuma: {
           label: "Schiuma da barba",
-
+          images: []
         },
         spray: {
           label: "Spray volume",
-
+          images: []
         }
+      };
+
+      const hasSubmenu = (catKey) => {
+        const cfg = catConfig[catKey];
+        return !!(cfg && Array.isArray(cfg.images) && cfg.images.length);
       };
 
       function openModal(){
@@ -1648,7 +1686,13 @@
         card.addEventListener("click", function(e){
           e.stopPropagation();
           const cat = this.dataset.cat;
-          openCategory(cat);
+
+          if (hasSubmenu(cat)){
+            openCategory(cat);
+          } else if (typeof showZoom === "function"){
+            const img = this.querySelector(".product-cat-image img");
+            if (img) showZoom(img.src, img.alt);
+          }
         });
       });
 
@@ -1660,13 +1704,20 @@
 
       const zoomModal = document.getElementById("product-zoom-modal");
       const zoomImg   = document.getElementById("product-zoom-img");
+      let showZoom = null;
 
       if(zoomModal && zoomImg){
-        detailGrid.addEventListener("click", function(e){
-          const img = e.target.tagName === "IMG" ? e.target : null;
-          if(!img) return;
-          zoomImg.src = img.src;
+        showZoom = function(src, alt){
+          zoomImg.src = src;
+          zoomImg.alt = alt || "Prodotto EscoBarber";
           zoomModal.classList.add("is-visible");
+        };
+
+        detailGrid.addEventListener("click", function(e){
+          const img = e.target.closest("img");
+          if(!img) return;
+          e.stopPropagation();
+          showZoom(img.src, img.alt);
         });
 
         zoomModal.addEventListener("click", function(){
@@ -1742,6 +1793,77 @@
       window.ebSetFirstVisibleHero();
     }
   });
+
+  (function(){
+  const sticky = document.querySelector(".wa-sticky");
+  const footer = document.querySelector("footer");
+
+  if (!sticky || !footer) return;
+
+  function checkPosition(){
+    const footerTop = footer.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+
+    // se il footer entra in vista → nascondi
+    if (footerTop < viewportHeight + 40) {
+      sticky.classList.add("hide-at-bottom");
+    } else {
+      sticky.classList.remove("hide-at-bottom");
+    }
+  }
+
+  window.addEventListener("scroll", checkPosition);
+  window.addEventListener("resize", checkPosition);
+
+  checkPosition();
+})();
+
+  </script>
+
+  <script>
+    // Disabilita WhatsApp e mostra un messaggio "Coming soon"
+    (function(){
+      const selectors = ['a[href*="wa.me"]','a[href*="whatsapp.com"]'];
+      const links = Array.from(document.querySelectorAll(selectors.join(',')));
+      if (!links.length) return;
+
+      let timer;
+      function ensureToast(){
+        let toast = document.getElementById("coming-soon-toast");
+        if (toast) return toast;
+
+        toast = document.createElement("div");
+        toast.id = "coming-soon-toast";
+        toast.className = "coming-soon-toast";
+        toast.setAttribute("role","status");
+        toast.setAttribute("aria-live","polite");
+        toast.textContent = "Dal 31 Dicembre";
+        document.body.appendChild(toast);
+        return toast;
+      }
+
+      function showToast(){
+        const toast = ensureToast();
+        toast.classList.add("is-visible");
+        clearTimeout(timer);
+        timer = setTimeout(()=>toast.classList.remove("is-visible"), 2000);
+      }
+
+      function handle(event){
+        event.preventDefault();
+        showToast();
+      }
+
+      links.forEach(link=>{
+        link.addEventListener("click", handle);
+        link.addEventListener("keydown", function(e){
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            showToast();
+          }
+        });
+      });
+    })();
   </script>
 
 </body>
