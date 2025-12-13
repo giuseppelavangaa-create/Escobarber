@@ -157,12 +157,12 @@
     }
     .nav{
       min-height:var(--header-height);
-      display:flex;
+      display:grid;
+      grid-template-columns: auto 1fr auto;
       align-items:center;
-      justify-content:space-between;
       gap:clamp(1rem,3vw,1.6rem);
-      flex-wrap:wrap;
     }
+
     .brand{
       display:flex;
       align-items:center;
@@ -200,12 +200,13 @@
       color:var(--muted);
     }
     .nav-links{
+      justify-self:center;
       display:flex;
       align-items:center;
       gap:clamp(0.5rem,1.2vw,0.9rem);
-      flex-wrap:wrap;
-      justify-content:flex-end;
+      flex-wrap:nowrap;
     }
+
     .nav-links a{
       font-size:clamp(0.7rem,0.3vw + 0.65rem,0.85rem);
       letter-spacing:.2em;
@@ -221,6 +222,47 @@
       color:var(--text);
       border-color:rgba(148,163,184,0.7);
       background:rgba(5,5,5,0.8);
+    }
+    .nav-toggle{
+      display:none;
+      background:none;
+      border:none;
+      cursor:pointer;
+      flex-direction:column;
+      gap:0.35rem;
+      justify-self:end;
+    }
+    .nav-toggle span{
+      width:1.6rem;
+      height:0.12rem;
+      background:#fff;
+      border-radius:2px;
+      display:block;
+    }
+    .mobile-menu{
+      position:fixed;
+      top:var(--header-height);
+      left:0;
+      width:100%;
+      background:rgba(0,0,0,0.95);
+      backdrop-filter:blur(10px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:1.2rem;
+      padding:2rem 0;
+      transform:translateY(-120%);
+      transition:transform .3s ease;
+      z-index:39;
+    }
+    .mobile-menu a{
+      font-size:0.9rem;
+      letter-spacing:.25em;
+      text-transform:uppercase;
+      color:#f9fafb;
+    }
+    .mobile-menu.is-open{
+      transform:translateY(0);
     }
     .btn{
       display:inline-flex;
@@ -946,7 +988,22 @@
       opacity:1;
       transform:translateY(0);
     }
-
+    @media (max-width: 62rem){
+      .nav{
+        grid-template-columns:auto 1fr auto;
+        justify-items:start;
+      }
+      .brand{
+        justify-content:flex-start;
+      }
+      .nav-links{
+        display:none;
+      }
+      .nav-toggle{
+        display:flex;
+        justify-self:end;
+      }
+    }
     /* RESPONSIVE TWEAKS */
     @media (max-width: 56rem){
       .hero-cta-wrapper{width:95vw;}
@@ -1042,8 +1099,20 @@
         <a href="#galleria">Tagli</a>
         <a href="#prodotti">Prodotti</a>
       </nav>
+      <button class="nav-toggle" aria-label="Apri menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
+
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="#about">Chi sono</a>
+    <a href="#servizi">Servizi</a>
+    <a href="#galleria">Tagli</a>
+    <a href="#prodotti">Prodotti</a>
+  </nav>
 
   <main>
     <!-- HERO -->
@@ -1629,8 +1698,8 @@
         cere: {
           label: "Cere",
           images: [
-            { src: "img/prodotto2.jpeg", alt: "Cera capelli 1" },
-            { src: "img/prodotto3.jpeg", alt: "Cera capelli 2" },
+            { src: "img/prodotto2.jpg", alt: "Cera capelli 1" },
+            { src: "img/prodotto3.jpg", alt: "Cera capelli 2" },
           ]
         },
         lacca: {
@@ -1865,6 +1934,16 @@
         });
       });
     })();
+  </script>
+
+  <script>
+    const toggle = document.querySelector(".nav-toggle");
+    const menu = document.getElementById("mobile-menu");
+    if (toggle && menu){
+      toggle.addEventListener("click", () => {
+        menu.classList.toggle("is-open");
+      });
+    }
   </script>
 
 </body>
