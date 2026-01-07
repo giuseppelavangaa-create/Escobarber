@@ -859,7 +859,10 @@
       border:0.07rem solid rgba(31,31,31,0.95);
       box-shadow:0 1.6rem 3.2rem rgba(0,0,0,0.75);
       position:relative;
-      overflow:hidden;
+      max-height:calc(100vh - 2.5rem);
+      overflow-x:hidden;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     .product-modal-close{
       position:absolute;
@@ -888,9 +891,11 @@
     .product-list-view{margin-top:clamp(1.2rem,2vw,1.6rem);}
     .product-cat-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+      /* SEMPRE 2 colonne, si restringono ma non diventano mai una lista */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap:clamp(0.9rem,1.8vw,1.4rem);
     }
+
     .product-cat-card{
       background:radial-gradient(circle at top,#181818 0,#050505 70%);
       border:0.07rem solid rgba(40,40,40,0.95);
@@ -1032,6 +1037,7 @@
         -webkit-overflow-scrolling:touch;
         padding-bottom:0.25rem;
         scroll-snap-type:x mandatory;
+        
       }
       
 
@@ -1190,8 +1196,6 @@
             <img src="img/immnegozio15.jpg" alt="Dettaglio EscoBarber 15">
           </figure>
            -->
-          <div class="hero-gradient"></div>
-        </div>
 
           <div class="hero-gradient"></div>
         </div>
@@ -1549,36 +1553,49 @@
 </footer>
 
   <!-- JSON-LD LocalBusiness -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Barbershop",
-    "name": "EscoBarber",
-    "image": "https://www.escobarber.it/cover.jpg",
-    "logo": "https://www.escobarber.it/logo.jpg",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Via Montegrappa 59",
-      "addressLocality": "Poggibonsi",
-      "addressRegion": "SI",
-      "postalCode": "53036",
-      "addressCountry": "IT"
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Barbershop",
+  "name": "EscoBarber",
+  "image": "https://www.escobarber.it/cover.jpg",
+  "logo": "https://www.escobarber.it/logo.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Via Montegrappa 59",
+    "addressLocality": "Poggibonsi",
+    "addressRegion": "SI",
+    "postalCode": "53036",
+    "addressCountry": "IT"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "43.469",
+    "longitude": "11.149"
+  },
+  "url": "https://www.escobarber.it/",
+  "telephone": "+39 375 111 0430",
+  "priceRange": "€€",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "09:00",
+      "closes": "20:00"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "43.469",
-      "longitude": "11.149"
-    },
-    "url": "https://www.escobarber.it/",
-    "telephone": "+39 375 111 0430"
-    "priceRange": "€€",
-    "openingHoursSpecification": [
-      {"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"20:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"18:30"}
-    ],
-    "sameAs": ["https://www.instagram.com/"]
-  }
-  </script>
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "18:00"
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/"
+  ]
+}
+</script>
+
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
