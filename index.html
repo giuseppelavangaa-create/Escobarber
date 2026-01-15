@@ -559,7 +559,7 @@
     .gallery-track{position:relative;}
     .gallery-row{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr));
+      grid-template-columns:repeat(4,minmax(0,1fr));
       gap:clamp(0.65rem,1.2vw,1rem);
     }
     .gallery-row:not(.is-active){display:none;}
@@ -584,7 +584,34 @@
       transform:scale(1.06);
       filter:brightness(1.02);
     }
-    .gallery-controls{
+    
+
+    /* VIDEO tiles: stessi vincoli responsive delle immagini */
+    .shot video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .shot.is-video{
+      cursor:pointer;
+    }
+    .shot.is-video::after{
+      content:"▶";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:clamp(2.4rem,6vw,3.4rem);
+      color:#fff;
+      background:rgba(0,0,0,0.35);
+      opacity:1;
+      transition:opacity .2s ease;
+      pointer-events:none;
+    }
+    .shot.is-video.is-playing::after{opacity:0;}
+.gallery-controls{
       margin-top:clamp(0.8rem,1.4vw,1rem);
       display:flex;
       justify-content:center;
@@ -1317,7 +1344,7 @@
       </div>
     </section>
 
-    <!-- GALLERIA -->
+        <!-- GALLERIA -->
     <section id="galleria">
       <div class="container">
         <div class="section-header">
@@ -1328,54 +1355,62 @@
         </div>
 
         <div class="gallery-shell reveal" aria-label="Galleria immagini tagli EscoBarber">
-        <div class="gallery-track">
-          <div class="gallery-row is-active">
-            <figure class="shot">
-              <img src="img/cut1.jpg" alt="Taglio sfumato 1">
-            </figure>
-            <figure class="shot">
-              <img src="img/cut2.jpg" alt="Taglio sfumato 2">
-            </figure>
-            <figure class="shot">
-              <img src="img/cut3.jpg" alt="Taglio sfumato 3">
-            </figure>
-            <figure class="shot">
-              <img src="img/cut4.jpg" alt="Taglio sfumato 4">
-            </figure>
+          <div class="gallery-track">
+
+            <!-- PAGINA 1: foto, video, foto, video -->
+            <div class="gallery-row is-active">
+              <figure class="shot"><img src="img/cut1.jpg" alt="Taglio sfumato 1"></figure>
+              <figure class="shot is-video">
+                <video src="img/videotaglio1.mp4" muted playsinline preload="metadata"></video>
+              </figure>
+              <figure class="shot"><img src="img/cut7.jpg" alt="Taglio sfumato 2"></figure>
+              <figure class="shot is-video">
+                <video src="img/videotaglio2.mp4" muted playsinline preload="metadata"></video>
+              </figure>
+            </div>
+
+            <!-- PAGINA 2: foto, video, foto, foto -->
+            <div class="gallery-row">
+              <figure class="shot"><img src="img/cut5.jpg" alt="Taglio sfumato 5"></figure>
+              <figure class="shot is-video">
+                <video src="img/videotaglio3.mp4" muted playsinline preload="metadata"></video>
+              </figure>
+              <figure class="shot"><img src="img/cut6.jpg" alt="Taglio sfumato 6"></figure>
+              <figure class="shot"><img src="img/cut13.jpg" alt="Taglio sfumato 7"></figure>
+            </div>
+
+            <!-- PAGINA 3: foto, video, foto, foto -->
+            <div class="gallery-row">
+              <figure class="shot"><img src="img/cut3.jpg" alt="Taglio sfumato 7"></figure>
+              <figure class="shot is-video">
+                <video src="img/videotaglio4.mp4" muted playsinline preload="metadata"></video>
+              </figure>
+              <figure class="shot"><img src="img/cut8.jpg" alt="Taglio sfumato 8"></figure>
+              <figure class="shot"><img src="img/cut9.jpg" alt="Taglio sfumato 9"></figure>
+            </div>
+
+            <!-- PAGINA 4: 4 foto -->
+            <div class="gallery-row">
+              <figure class="shot"><img src="img/cut10.jpg" alt="Taglio sfumato 10"></figure>
+              <figure class="shot"><img src="img/cut2.jpg" alt="Taglio sfumato 11"></figure>
+              <figure class="shot"><img src="img/cut12.jpg" alt="Taglio sfumato 12"></figure>
+              <figure class="shot"><img src="img/cut13.jpg" alt="Taglio sfumato 13"></figure>
+            </div>
+
+            <p class="gallery-hint">
+              Scorri le foto
+              <span class="gallery-hint-icon">↔</span>
+            </p>
+
+          </div><!-- /gallery-track -->
+
+          <div class="gallery-controls" aria-label="Controlli galleria tagli">
+            <button class="gallery-btn" id="gallery-prev" type="button">‹</button>
+            <span class="gallery-status" id="gallery-status">1 / 4</span>
+            <button class="gallery-btn" id="gallery-next" type="button">›</button>
           </div>
 
-          <!-- Galleria extra disattivata: riattiva togliendo i commenti
-          <div class="gallery-row">
-            <figure class="shot">
-              <img src="img/cut5.jpg" alt="Taglio sfumato 5">
-            </figure>
-            <figure class="shot">
-              <img src="img/cut6.jpg" alt="Taglio sfumato 6">
-            </figure>
-          </div>
-          <div class="gallery-row">
-            <figure class="shot"><img src="img/cut7.jpg" alt="Taglio sfumato 7"></figure>
-            <figure class="shot"><img src="img/cut8.jpg" alt="Taglio sfumato 8"></figure>
-            <figure class="shot"><img src="img/cut9.jpg" alt="Taglio sfumato 9"></figure>
-          </div>
-
-          <div class="gallery-row">
-            <figure class="shot"><img src="img/cut10.jpg" alt="Taglio sfumato 10"></figure>
-            <figure class="shot"><img src="img/cut11.jpg" alt="Taglio sfumato 11"></figure>
-            <figure class="shot"><img src="img/cut12.jpg" alt="Taglio sfumato 12"></figure>
-          </div>
-
-          <div class="gallery-row">
-            <figure class="shot"><img src="img/cut13.jpg" alt="Taglio sfumato 13"></figure>
-            <figure class="shot"><img src="img/cut14.jpg" alt="Taglio sfumato 14"></figure>
-            <figure class="shot"><img src="img/cut15.jpg" alt="Taglio sfumato 15"></figure>
-          </div>
-          -->
-          <p class="gallery-hint">
-            Scorri le foto
-            <span class="gallery-hint-icon">↔</span>
-          </p>
-        </div>
+        </div><!-- /gallery-shell -->
       </div>
     </section>
 
@@ -1690,7 +1725,7 @@
       }, 6000);
     })();
 
-      // GALLERY SLIDER + MODAL
+            // GALLERY SLIDER + MODAL + VIDEO TAP
       (function(){
         const rows   = Array.from(document.querySelectorAll(".gallery-row"));
         if (!rows.length) return;
@@ -1699,37 +1734,39 @@
         const status = document.getElementById("gallery-status");
         const track  = document.querySelector(".gallery-track");
 
-        // solo mobile: stessa breakpoint del CSS (@media max-width: 42rem)
+        const videos = Array.from(document.querySelectorAll(".shot.is-video video"));
+
+        function stopAllVideos(){
+          videos.forEach(v=>{
+            v.pause();
+            const tile = v.closest(".shot.is-video");
+            if (tile) tile.classList.remove("is-playing");
+          });
+        }
+
         function isMobileGallery(){
-          return window.matchMedia &&
-                window.matchMedia("(max-width: 42rem)").matches;
+          return window.matchMedia && window.matchMedia("(max-width: 42rem)").matches;
         }
 
         function showRow(i){
-          rows.forEach((row,idx)=>row.classList.toggle("is-active", idx === i));
-          if (status) status.textContent = (i+1) + " / " + rows.length;
+          current = (i + rows.length) % rows.length;
+          rows.forEach((row,idx)=>row.classList.toggle("is-active", idx === current));
+          if (status) status.textContent = (current + 1) + " / " + rows.length;
 
-          // FIX: quando cambio pagina, su mobile riporto lo scroll orizzontale all'inizio
           if (track && isMobileGallery()){
             track.scrollLeft = 0;
           }
+          stopAllVideos();
         }
         showRow(0);
 
         const prev = document.getElementById("gallery-prev");
         const next = document.getElementById("gallery-next");
 
-        if (prev && next){
-          prev.addEventListener("click", function(){
-            current = (current - 1 + rows.length) % rows.length;
-            showRow(current);
-          });
-          next.addEventListener("click", function(){
-            current = (current + 1) % rows.length;
-            showRow(current);
-          });
-        }
+        if (prev) prev.addEventListener("click", ()=> showRow(current - 1));
+        if (next) next.addEventListener("click", ()=> showRow(current + 1));
 
+        // MODAL immagini (solo foto)
         const modal = document.getElementById("gallery-modal");
         const modalImg = document.getElementById("gallery-modal-img");
 
@@ -1744,10 +1781,29 @@
             modal.classList.remove("is-visible");
           });
         }
+
+        // TAP video: play/pausa inline (non apre il modal)
+        document.querySelectorAll(".shot.is-video").forEach(tile=>{
+          const v = tile.querySelector("video");
+          if(!v) return;
+
+          tile.addEventListener("click", (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (v.paused){
+              stopAllVideos();
+              v.play().catch(()=>{});
+              tile.classList.add("is-playing");
+            } else {
+              v.pause();
+              tile.classList.remove("is-playing");
+            }
+          });
+        });
       })();
 
-
-    // MODAL PRODOTTI: CARTELLE + DETTAGLIO + ZOOM
+// MODAL PRODOTTI: CARTELLE + DETTAGLIO + ZOOM
     (function(){
       const trigger = document.getElementById("products-panel-trigger");
       const modal = document.getElementById("products-modal");
