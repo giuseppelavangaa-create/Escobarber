@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="it">
+<!-- Scroll bloccato di default: si sblocca quando finisce il preloader -->
+<html lang="it" class="eb-scroll-locked">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -63,6 +64,15 @@
       scroll-behavior:smooth;
       min-height:100vh;
       line-height:1.6;
+    }
+
+    /* BLOCCO SCORRIMENTO (preloader + pannelli/modal)
+       Non cambia lo sfondo: blocca solo la pagina sotto. */
+    html.eb-scroll-locked,
+    body.eb-scroll-locked{
+      overflow:hidden !important;
+      height:100% !important;
+      touch-action:none;
     }
     img{max-width:100%;display:block}
     a{text-decoration:none;color:inherit}
@@ -592,9 +602,13 @@
       height:100%;
       object-fit:cover;
       display:block;
+      background:transparent;
     }
     .shot.is-video{
       cursor:pointer;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
     }
     .shot.is-video::after{
       content:"▶";
@@ -1078,6 +1092,9 @@
       .hero-cta{width:100%;}
       .footer-inner{justify-content:center;}
       /* GALLERIA MOBILE: SCORRIMENTO ORIZZONTALE PULITO */
+      .gallery-controls{display:none;}
+      .gallery-status{display:none;}
+
       .gallery-track{
         overflow-x:auto;
         -webkit-overflow-scrolling:touch;
@@ -1360,11 +1377,11 @@
             <!-- PAGINA 1: foto, video, foto, video -->
             <div class="gallery-row is-active">
               <figure class="shot"><img src="img/cut1.jpg" alt="Taglio sfumato 1"></figure>
-              <figure class="shot is-video">
+              <figure class="shot is-video" data-video-thumb="auto">
                 <video src="img/videotaglio1.mp4" muted playsinline preload="metadata"></video>
               </figure>
               <figure class="shot"><img src="img/cut7.jpg" alt="Taglio sfumato 2"></figure>
-              <figure class="shot is-video">
+              <figure class="shot is-video" data-video-thumb="auto">
                 <video src="img/videotaglio2.mp4" muted playsinline preload="metadata"></video>
               </figure>
             </div>
@@ -1372,7 +1389,7 @@
             <!-- PAGINA 2: foto, video, foto, foto -->
             <div class="gallery-row">
               <figure class="shot"><img src="img/cut5.jpg" alt="Taglio sfumato 5"></figure>
-              <figure class="shot is-video">
+              <figure class="shot is-video" data-video-thumb="auto">
                 <video src="img/videotaglio3.mp4" muted playsinline preload="metadata"></video>
               </figure>
               <figure class="shot"><img src="img/cut6.jpg" alt="Taglio sfumato 6"></figure>
@@ -1382,7 +1399,7 @@
             <!-- PAGINA 3: foto, video, foto, foto -->
             <div class="gallery-row">
               <figure class="shot"><img src="img/cut3.jpg" alt="Taglio sfumato 7"></figure>
-              <figure class="shot is-video">
+              <figure class="shot is-video" data-video-thumb="auto">
                 <video src="img/videotaglio4.mp4" muted playsinline preload="metadata"></video>
               </figure>
               <figure class="shot"><img src="img/cut8.jpg" alt="Taglio sfumato 8"></figure>
@@ -1659,6 +1676,56 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    /* =========================================================
+       BLOCCO SCORRIMENTO (preloader + pannelli/modal)
+       - Non altera sfondo o layout.
+       - Evita scroll/touch mentre un overlay e' attivo.
+       ========================================================= */
+    (function(){
+      let lockCount = 0;
+      let savedScrollY = 0;
+      const html = document.documentElement;
+      const body = document.body;
+
+      function applyLock(){
+        if (lockCount !== 1) return;
+        savedScrollY = window.scrollY || window.pageYOffset || 0;
+        html.classList.add('eb-scroll-locked');
+        body.classList.add('eb-scroll-locked');
+        // blocco “duro” per iOS: evita che la pagina scorra dietro i modal
+        body.style.position = 'fixed';
+        body.style.top = (-savedScrollY) + 'px';
+        body.style.left = '0';
+        body.style.right = '0';
+        body.style.width = '100%';
+      }
+
+      function removeLock(){
+        if (lockCount !== 0) return;
+        html.classList.remove('eb-scroll-locked');
+        body.classList.remove('eb-scroll-locked');
+        body.style.position = '';
+        body.style.top = '';
+        body.style.left = '';
+        body.style.right = '';
+        body.style.width = '';
+        window.scrollTo(0, savedScrollY);
+      }
+
+      window.ebLockScroll = function(){
+        lockCount = Math.max(0, lockCount + 1);
+        applyLock();
+      };
+
+      window.ebUnlockScroll = function(){
+        lockCount = Math.max(0, lockCount - 1);
+        removeLock();
+      };
+
+      // blocca subito (preloader visibile)
+      window.ebLockScroll();
+    })();
+
     // Reveal on scroll
     (function(){
       const els = document.querySelectorAll(".reveal");
@@ -1734,7 +1801,43 @@
         const status = document.getElementById("gallery-status");
         const track  = document.querySelector(".gallery-track");
 
-        const videos = Array.from(document.querySelectorAll(".shot.is-video video"));
+        
+        const mqMobile = window.matchMedia("(max-width: 42rem)");
+
+        // MOBILE: uno scorrimento unico (senza "pagine")
+        function setupMobileContinuous(){
+          if (!mqMobile.matches) return false;
+
+          // se già convertita, esci
+          if (track && track.querySelector(".gallery-row--continuous")) return true;
+
+          const hint = track ? track.querySelector(".gallery-hint") : null;
+          if (!track || !hint) return false;
+
+          const allShots = [];
+          rows.forEach(r=>{
+            r.querySelectorAll(".shot").forEach(s=> allShots.push(s));
+          });
+
+          // crea una sola riga con tutti i pannelli
+          const oneRow = document.createElement("div");
+          oneRow.className = "gallery-row is-active gallery-row--continuous";
+          allShots.forEach(s=> oneRow.appendChild(s));
+
+          // rimuovi le righe vecchie
+          rows.forEach(r=> r.remove());
+
+          // inserisci prima del hint
+          track.insertBefore(oneRow, hint);
+
+          // disattiva paginazione in mobile (tutto è già visibile nello scroll)
+          const controls = document.querySelector(".gallery-controls");
+          if (controls) controls.style.display = "none";
+          if (status) status.style.display = "none";
+
+          return true;
+        }
+const videos = Array.from(document.querySelectorAll(".shot.is-video video"));
 
         function stopAllVideos(){
           videos.forEach(v=>{
@@ -1758,15 +1861,20 @@
           }
           stopAllVideos();
         }
-        showRow(0);
+        if (setupMobileContinuous()){
+          // in mobile: niente pulsanti, solo swipe
+        } else {
+          showRow(0);
+        }
 
-        const prev = document.getElementById("gallery-prev");
+const prev = document.getElementById("gallery-prev");
         const next = document.getElementById("gallery-next");
 
-        if (prev) prev.addEventListener("click", ()=> showRow(current - 1));
-        if (next) next.addEventListener("click", ()=> showRow(current + 1));
+        if (prev) prev.addEventListener("click", ()=> { if(!setupMobileContinuous()) showRow(current - 1); });
+        if (next) next.addEventListener("click", ()=> { if(!setupMobileContinuous()) showRow(current + 1); });
 
-        // MODAL immagini (solo foto)
+        mqMobile.addEventListener("change", ()=> { location.reload(); });
+// MODAL immagini (solo foto)
         const modal = document.getElementById("gallery-modal");
         const modalImg = document.getElementById("gallery-modal-img");
 
@@ -1775,10 +1883,12 @@
             img.addEventListener("click", function(){
               modalImg.src = this.src;
               modal.classList.add("is-visible");
+              if (typeof window.ebLockScroll === "function") window.ebLockScroll();
             });
           });
           modal.addEventListener("click", function(){
             modal.classList.remove("is-visible");
+            if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
           });
         }
 
@@ -1846,10 +1956,12 @@
         modal.classList.add("is-visible");
         listView.style.display   = "block";
         detailView.style.display = "none";
+        if (typeof window.ebLockScroll === "function") window.ebLockScroll();
       }
 
       function closeModal(){
         modal.classList.remove("is-visible");
+        if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
       }
 
       function openCategory(catKey){
@@ -1902,6 +2014,7 @@
           zoomImg.src = src;
           zoomImg.alt = alt || "Prodotto EscoBarber";
           zoomModal.classList.add("is-visible");
+          if (typeof window.ebLockScroll === "function") window.ebLockScroll();
         };
 
         detailGrid.addEventListener("click", function(e){
@@ -1913,6 +2026,7 @@
 
         zoomModal.addEventListener("click", function(){
           zoomModal.classList.remove("is-visible");
+          if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
         });
       }
     })();
@@ -1925,6 +2039,10 @@
       window.addEventListener("load", function () {
         setTimeout(function () {
           preloader.classList.add("hidden");
+          // sblocca lo scroll solo quando il preloader e' finito (dopo la transizione)
+          setTimeout(function(){
+            if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
+          }, 650);
         }, 2500);
       });
     });
@@ -2016,9 +2134,86 @@
     if (toggle && menu){
       toggle.addEventListener("click", () => {
         menu.classList.toggle("is-open");
+        if (menu.classList.contains("is-open")){
+          if (typeof window.ebLockScroll === "function") window.ebLockScroll();
+        } else {
+          if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
+        }
+      });
+
+      // chiudi menu quando clicchi un link (e riabilita scroll)
+      menu.querySelectorAll('a').forEach(a=>{
+        a.addEventListener('click', ()=>{
+          if (menu.classList.contains('is-open')){
+            menu.classList.remove('is-open');
+            if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
+          }
+        });
       });
     }
   </script>
+
+
+<script>
+  // Genera un'anteprima reale del video (prima frame) e la usa come sfondo del tile.
+  // Evita lo schermo nero su mobile senza usare foto di altri tagli.
+  (function(){
+    const videos = document.querySelectorAll('.shot.is-video[data-video-thumb="auto"] > video');
+    if(!videos.length) return;
+
+    const makeThumb = (v) => {
+      const parent = v.parentElement;
+      if(parent.dataset.thumbReady === '1') return;
+      if(!v.videoWidth || !v.videoHeight) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = v.videoWidth;
+      canvas.height = v.videoHeight;
+      const ctx = canvas.getContext('2d');
+      try{
+        ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+        const url = canvas.toDataURL('image/jpeg', 0.78);
+        parent.style.backgroundImage = `url('${url}')`;
+        parent.style.backgroundSize = 'cover';
+        parent.style.backgroundPosition = 'center';
+        parent.dataset.thumbReady = '1';
+        parent.classList.add('has-thumb');
+      }catch(e){ /* niente: resta lo stile di default */ }
+    };
+
+    videos.forEach(v => {
+      // impostazioni safe per mobile
+      v.muted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline','');
+      v.preload = 'metadata';
+
+      // Sblocca un frame: dopo i metadata, ci spostiamo a un tempo minimo.
+      const onMeta = () => {
+        const t = Math.min(0.12, (isFinite(v.duration) && v.duration > 0) ? v.duration * 0.05 : 0.12);
+        try{
+          v.currentTime = t;
+        }catch(e){ /* iOS può bloccare: riproviamo al loadeddata */ }
+      };
+
+      const onLoadedData = () => {
+        // se non è riuscito a fare seek, prova ora
+        if(!v.videoWidth) return;
+        if(v.currentTime === 0){
+          try{ v.currentTime = 0.12; }catch(e){}
+        }
+      };
+
+      const onSeeked = () => makeThumb(v);
+
+      v.addEventListener('loadedmetadata', onMeta, { once:true });
+      v.addEventListener('loadeddata', onLoadedData, { once:true });
+      v.addEventListener('seeked', onSeeked);
+
+      // fallback: se il seeked non arriva (alcuni browser), tenta dopo un attimo
+      setTimeout(() => { if(v.readyState >= 2) makeThumb(v); }, 700);
+    });
+  })();
+</script>
 
 </body>
 </html>
