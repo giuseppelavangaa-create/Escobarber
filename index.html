@@ -2031,22 +2031,72 @@ const prev = document.getElementById("gallery-prev");
       }
     })();
 
-    // PRELOADER
-    document.addEventListener("DOMContentLoaded", function () {
-      const preloader = document.getElementById("eb-preloader");
-      if (!preloader) return;
+  // PRELOADER (robusto: non deve mai bloccare la pagina)
+  document.addEventListener("DOMContentLoaded", function () {
+    const preloader = document.getElementById("eb-preloader");
+    if (!preloader) {
+      // se per qualche motivo non c'è overlay, assicura che lo scroll non resti bloccato
+      if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
+      return;
+    }
 
-      window.addEventListener("load", function () {
-        setTimeout(function () {
-          preloader.classList.add("hidden");
-          // sblocca lo scroll solo quando il preloader e' finito (dopo la transizione)
-          setTimeout(function(){
-            if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
-          }, 650);
-        }, 2500);
+    const TRANSITION_MS = 650;   // deve combaciare con CSS (opacity/visibility 0.6s)
+    const MIN_SHOW_MS   = 2500;   // minimo “effetto” visivo
+    const MAX_WAIT_MS   = 3500;  // safety: dopo questo, chiudi SEMPRE
+
+    const t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    let done = false;
+
+    function finish(reason) {
+      if (done) return;
+      done = true;
+
+      const now = (window.performance && performance.now) ? performance.now() : Date.now();
+      const elapsed = now - t0;
+      const wait = Math.max(0, MIN_SHOW_MS - elapsed);
+
+      setTimeout(() => {
+        preloader.classList.add("hidden");
+
+        // sblocca lo scroll solo dopo che la transizione è finita
+        setTimeout(() => {
+          if (typeof window.ebUnlockScroll === "function") window.ebUnlockScroll();
+        }, TRANSITION_MS);
+      }, wait);
+    }
+
+    // 1) safety assoluta: anche se load non arriva MAI
+    setTimeout(() => finish("safety-timeout"), MAX_WAIT_MS);
+
+    // 2) appena DOM pronto → possiamo già togliere (con minimo display)
+    // requestAnimationFrame evita di chiudere prima del primo paint
+    requestAnimationFrame(() => finish("dom-ready"));
+
+    // 3) se arriva load, ok (non deve essere requisito)
+    window.addEventListener("load", () => finish("window-load"), { once: true });
+
+    // 4) se le immagini del preloader finiscono prima, chiudi subito
+    const imgs = preloader.querySelectorAll("img");
+    if (imgs.length) {
+      let remaining = imgs.length;
+
+      function oneDone() {
+        remaining -= 1;
+        if (remaining <= 0) finish("preloader-images");
+      }
+
+      imgs.forEach((img) => {
+        if (img.complete) {
+          oneDone();
+        } else {
+          img.addEventListener("load", oneDone, { once: true });
+          img.addEventListener("error", oneDone, { once: true }); // se un file manca, non deve bloccare
+        }
       });
-    });
-  </script>
+    }
+  });
+</script>
+
 
   <!-- WhatsApp: appare solo dopo aver scrollato oltre la home -->
   <script>
