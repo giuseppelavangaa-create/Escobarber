@@ -1156,6 +1156,30 @@
       pointer-events: none !important;
       transform: translateY(0.6rem) scale(.95);
     }
+    /* BLOCCA QUALSIASI IMMAGINE MOBILE SU DESKTOP, ANCHE DURANTE LOAD */
+    @media (min-width: 769px) {
+      .hero-slide img {
+        aspect-ratio: 16 / 9;
+      }
+
+      .hero-slide img[src*="vertical"],
+      .hero-slide img[src*="mobile"],
+      .hero-slide img.portrait {
+        display: none !important;
+      }
+    }
+    /* BLOCCA QUALSIASI IMMAGINE MOBILE SU DESKTOP, ANCHE DURANTE LOAD */
+    @media (min-width: 769px) {
+      .hero-slide img {
+        aspect-ratio: 16 / 9;
+      }
+
+      .hero-slide img[src*="vertical"],
+      .hero-slide img[src*="mobile"],
+      .hero-slide img.portrait {
+        display: none !important;
+      }
+    }
 
   </style>
 </head>
@@ -1784,12 +1808,13 @@
       setFirstVisible();
       mq.addEventListener("change", setFirstVisible);
 
+      const HERO_SLIDE_INTERVAL_MS = 9000;
       setInterval(function(){
         const next = nextVisible(current);
         if(next === null) return;
         current = next;
         showSlide(current);
-      }, 6000);
+      }, HERO_SLIDE_INTERVAL_MS);
     })();
 
             // GALLERY SLIDER + MODAL + VIDEO TAP
