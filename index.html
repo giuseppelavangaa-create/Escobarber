@@ -342,6 +342,11 @@
       width:100%;
       height:100%;
       overflow:hidden;
+      opacity:0;
+      transition:opacity .5s ease;
+    }
+    html.eb-hero-ready .hero-slider{
+      opacity:1;
     }
     .hero-slide{
       position:absolute;
@@ -1773,10 +1778,13 @@
       const slides = Array.from(document.querySelectorAll(".hero-slide"));
       if (!slides.length) return;
 
+      slides.forEach(slide => slide.classList.add("auto-pending"));
+
       const mq = window.matchMedia("(max-width: 768px)");
       let current = -1;
 
       function isVisibleSlide(slide){
+        if (slide.classList.contains("auto-pending")) return false;
         return mq.matches
           ? !slide.classList.contains("auto-desktop")
           : !slide.classList.contains("auto-mobile");
@@ -1797,9 +1805,10 @@
 
       function setFirstVisible(){
         const first = nextVisible(-1);
-        if(first === null) return;
+        if(first === null) return false;
         current = first;
         showSlide(current);
+        return true;
       }
 
       // espongo la funzione così possiamo richiamarla dopo la classificazione delle immagini
@@ -1808,7 +1817,7 @@
       setFirstVisible();
       mq.addEventListener("change", setFirstVisible);
 
-      const HERO_SLIDE_INTERVAL_MS = 9000;
+      const HERO_SLIDE_INTERVAL_MS = 6000;
       setInterval(function(){
         const next = nextVisible(current);
         if(next === null) return;
@@ -2148,10 +2157,17 @@ const prev = document.getElementById("gallery-prev");
 
   <script>
   // Classificazione autom. delle immagini HERO in mobile / desktop
-  window.addEventListener("load", () => {
-    const imgs = document.querySelectorAll(".hero-slide img");
+  (function(){
+    const slides = Array.from(document.querySelectorAll(".hero-slide"));
+    const imgs = Array.from(document.querySelectorAll(".hero-slide img"));
+    if (!slides.length || !imgs.length) return;
 
-    imgs.forEach(img => {
+    const html = document.documentElement;
+    let ready = false;
+
+    slides.forEach(slide => slide.classList.add("auto-pending"));
+
+    function classify(img){
       const slide = img.closest(".hero-slide");
       if (!slide) return;
 
@@ -2159,7 +2175,7 @@ const prev = document.getElementById("gallery-prev");
       const h = img.naturalHeight;
 
       // pulisco eventuali classi vecchie
-      slide.classList.remove("auto-mobile", "auto-desktop");
+      slide.classList.remove("auto-mobile", "auto-desktop", "auto-pending");
 
       if (h > w) {
         // immagine più alta che larga = verticale = mobile
@@ -2168,14 +2184,44 @@ const prev = document.getElementById("gallery-prev");
         // immagine più larga che alta = orizzontale = desktop
         slide.classList.add("auto-desktop");
       }
+    }
+
+    function tryReady(){
+      if (ready) return;
+      if (typeof window.ebSetFirstVisibleHero === "function") {
+        const ok = window.ebSetFirstVisibleHero();
+        if (ok) {
+          html.classList.add("eb-hero-ready");
+          ready = true;
+        }
+      }
+    }
+
+    imgs.forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        classify(img);
+        tryReady();
+      } else {
+        const onLoad = () => {
+          classify(img);
+          tryReady();
+        };
+        img.addEventListener("load", onLoad, { once: true });
+        img.addEventListener("error", onLoad, { once: true });
+      }
     });
 
-    // dopo aver classificato tutte le slide,
-    // dico allo slider di scegliere la prima giusta per lo schermo
-    if (typeof window.ebSetFirstVisibleHero === "function") {
-      window.ebSetFirstVisibleHero();
-    }
-  });
+    // fallback: evita blocchi se un'immagine non arriva mai
+    setTimeout(() => {
+      if (ready) return;
+      slides.forEach(slide => slide.classList.remove("auto-pending"));
+      if (typeof window.ebSetFirstVisibleHero === "function") {
+        window.ebSetFirstVisibleHero();
+      }
+      html.classList.add("eb-hero-ready");
+      ready = true;
+    }, 4500);
+  })();
 
   (function(){
   const sticky = document.querySelector(".wa-sticky");
